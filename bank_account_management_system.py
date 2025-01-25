@@ -1,7 +1,8 @@
 # Enhanced Bank Account Management System
 
 # 🏦 Data Structures to Store Information
-account_holders = []  # Account names
+account_holders = []# Account names
+account_passwords = []      #Account password
 balances = []         # Account balances
 transaction_histories = []  # Account transaction logs
 loans = []            # Account loan details
@@ -26,43 +27,198 @@ def display_menu():
 
 def create_account():
     """Create a new account."""
-    pass  # TODO: Add logic
+    username = input("Please add desired username:")
+    if username in account_holders:
+        print("This username is already in use. Please try again.")
+    else:
+        password = input("Enter desired password for your account:")
+        account_holders.append(username)
+        balances.append(0)
+        loans.append({})
+        transaction_histories.append([])
+        account_passwords.append(password)
+        print("Account created successfully!")
 
 def deposit():
     """Deposit money into an account."""
-    pass  # TODO: Add logic
+    username = input("Please enter your username:")
+    if username in account_holders:
+        user_id = account_holders.index(username)
+        password = input("Please enter your password:")
+
+        if password == account_passwords[user_id]:
+            money_to_deposit = float(input("Enter amount to deposit:"))
+
+            balances[user_id] += money_to_deposit
+            transaction_histories[user_id].append(+money_to_deposit)
+            print(f"{money_to_deposit:.2f} successfully deposited!")
+        else:
+            print("Wrong password. Please try again.")
+    else:
+        print("Invalid username. Please try again.")
 
 def withdraw():
     """Withdraw money from an account."""
-    pass  # TODO: Add logic
+    username = input("Please enter your username:")
+    if username in account_holders:
+        user_id = account_holders.index(username)
+        password = input("Please enter your password:")
+
+        if password == account_passwords[user_id]:
+            money_to_withdraw = float(input("Enter amount to withdraw:"))
+
+            if money_to_withdraw <= balances[user_id]:
+                balances[user_id] -= money_to_withdraw
+                transaction_histories[user_id].append(-money_to_withdraw)
+                print(f"{money_to_withdraw:.2f} withdrawn successfully!")
+            else:
+                print("Sorry, not enough money!")
+        else:
+            print("Wrong password. Please try again.")
+    else:
+        print("Invalid username. Please try again.")
 
 def check_balance():
     """Check balance of an account."""
-    pass  # TODO: Add logic
+    username = input("Please enter your username:")
+
+    if username in account_holders:
+        user_id = account_holders.index(username)
+        password = input("Please enter your password:")
+
+        if password == account_passwords[user_id]:
+            print(f"{username}'s account balance:")
+            print(f"{balances[user_id]:.2f}")
+
+        else:
+            print("Wrong password. Please try again.")
+    else:
+        print("Invalid username. Please try again.")
 
 def list_accounts():
     """List all account holders and details."""
-    pass  # TODO: Add logic
+    for user_id in range(len(account_holders)):
+        print(f"{account_holders[user_id]}: Current balance: {balances[user_id]:.2f}, \
+        Loans: {loans[user_id]['remaining amount']:.2f}")
 
 def transfer_funds():
     """Transfer funds between two accounts."""
-    pass  # TODO: Add logic
+    username = input("Please enter your username:")
+    if username in account_holders:
+        user_id = account_holders.index(username)
+        password = input("Please enter your password:")
+
+        if password == account_passwords[user_id]:
+            recipient = input("Please enter recipient username:")
+            if recipient in account_holders:
+                recipient_id = account_holders.index(recipient)
+                money_to_transfer = float(input("Enter amount to transfer:"))
+                if money_to_transfer <= balances[user_id]:
+                    balances[user_id] -= money_to_transfer
+                    transaction_histories[user_id].append(-money_to_transfer)
+                    balances[recipient_id] += money_to_transfer
+                    transaction_histories[recipient_id].append(+money_to_transfer)
+                    print(f"{money_to_transfer} successfully transferred to {recipient} ")
+                else:
+                    print("Sorry, not enough money!")
+            else:
+                print("Invalid recipient username")
+
+        else:
+            print("Wrong password. Please try again.")
+    else:
+        print("Invalid username. Please try again.")
 
 def view_transaction_history():
     """View transactions for an account."""
-    pass  # TODO: Add logic
+    username = input("Please enter your username:")
+    if username in account_holders:
+        user_id = account_holders.index(username)
+        password = input("Please enter your password:")
+
+        if password == account_passwords[user_id]:
+            print(f"{username}'s transaction history:")
+            print(*transaction_histories[user_id], sep="\n")
+
+        else:
+            print("Wrong password. Please try again.")
+    else:
+        print("Invalid username. Please try again.")
 
 def apply_for_loan():
     """Allow user to apply for a loan."""
-    pass  # TODO: Add logic
+    username = input("Please enter your username:")
+    if username in account_holders:
+        user_id = account_holders.index(username)
+        password = input("Please enter your password:")
+
+        if password == account_passwords[user_id]:
+            loan_amount = float(input("Enter amount you want to loan:"))
+            if loan_amount not in range(0, 10001):
+                print("Wrong amount!Amount must be in range 1 to 10000")
+            else:
+                term_in_years = int(input("Enter desired term in years:"))
+                interest = loan_amount * INTEREST_RATE * term_in_years
+                amount_due = loan_amount + interest
+                minimal_monthly_payment = amount_due / (term_in_years * 12)
+
+                loans[user_id]['remaining amount'] = amount_due
+                loans[user_id]["monthly_payment"] = minimal_monthly_payment
+                balances[user_id] += amount_due
+                transaction_histories[user_id].append(+amount_due)
+
+                print(f"Your interest rate is: {INTEREST_RATE*100}%")
+                print(f"Amount due on the loan is {amount_due:.2f}")
+                print(f"Minimum monthly loan payment: {minimal_monthly_payment:.2f}")
+        else:
+            print("Wrong password. Please try again.")
+    else:
+        print("Invalid username. Please try again.")
 
 def repay_loan():
     """Allow user to repay a loan."""
-    pass  # TODO: Add logic
+    username = input("Please enter your username:")
+    if username in account_holders:
+        user_id = account_holders.index(username)
+        password = input("Please enter your password:")
+
+        if password == account_passwords[user_id]:
+            payment = float(input(f"Enter amount to repay (minimum payment:{loans[user_id]['monthly_payment']:.2f}):"))
+            if loans[user_id]['monthly_payment'] <= payment <= loans[user_id]['remaining amount']:
+                loans[user_id]['remaining amount'] -= payment
+                balances[user_id] -= payment
+                transaction_histories[user_id].append(-payment)
+                print("Successful payment!")
+
+            elif loans[user_id]['monthly_payment'] > payment:
+                print("Amount is lower than minimum monthly payment!")
+
+            elif payment > loans[user_id]['remaining amount']:
+                print("Amount is greater than remaining amount on loan")
+
+        else:
+            print("Wrong password. Please try again.")
+    else:
+        print("Invalid username. Please try again.")
 
 def identify_card_type():
     """Identify type of credit card."""
-    pass  # TODO: Add logic
+    card_number = input("Please enter your card number (must be 16 digits long):")
+
+    if len(card_number) != 16:
+        print("Wrong length of card number!")
+    else:
+        card_type = ""
+        if card_number.startswith("4"):
+            card_type = "Visa"
+        elif card_number.startswith(("51", "52", "53", "54", "55")):
+            card_type = "MasterCard"
+        elif card_number.startswith(("34", "37")):
+            card_type = "American Express"
+        else:
+            card_type = "Other"
+
+        print(card_type)
 
 def main():
     """Run the banking system."""
