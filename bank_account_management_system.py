@@ -29,7 +29,7 @@ def create_account():
     """Create a new account."""
     username = input("Please add desired username:")
     if username in account_holders:
-        print("This username is already in use. Please try again.")
+        return "This username is already in use. Please try again."
     else:
         password = input("Enter desired password for your account:")
         account_holders.append(username)
@@ -37,7 +37,7 @@ def create_account():
         loans.append({})
         transaction_histories.append([])
         account_passwords.append(password)
-        print("Account created successfully!")
+        return "Account created successfully!"
 
 def deposit():
     """Deposit money into an account."""
@@ -51,11 +51,11 @@ def deposit():
 
             balances[user_id] += money_to_deposit
             transaction_histories[user_id].append(+money_to_deposit)
-            print(f"{money_to_deposit:.2f} successfully deposited!")
+            return f"{money_to_deposit:.2f} successfully deposited!"
         else:
-            print("Wrong password. Please try again.")
+            return "Wrong password. Please try again."
     else:
-        print("Invalid username. Please try again.")
+        return "Invalid username. Please try again."
 
 def withdraw():
     """Withdraw money from an account."""
@@ -70,13 +70,13 @@ def withdraw():
             if money_to_withdraw <= balances[user_id]:
                 balances[user_id] -= money_to_withdraw
                 transaction_histories[user_id].append(-money_to_withdraw)
-                print(f"{money_to_withdraw:.2f} withdrawn successfully!")
+                return f"{money_to_withdraw:.2f} withdrawn successfully!"
             else:
-                print("Sorry, not enough money!")
+                return "Sorry, not enough money!"
         else:
-            print("Wrong password. Please try again.")
+            return "Wrong password. Please try again."
     else:
-        print("Invalid username. Please try again.")
+        return "Invalid username. Please try again."
 
 def check_balance():
     """Check balance of an account."""
@@ -87,19 +87,18 @@ def check_balance():
         password = input("Please enter your password:")
 
         if password == account_passwords[user_id]:
-            print(f"{username}'s account balance:")
-            print(f"{balances[user_id]:.2f}")
+            return f"{username}'s account balance:\n{balances[user_id]:.2f}"
 
         else:
-            print("Wrong password. Please try again.")
+            return "Wrong password. Please try again."
     else:
-        print("Invalid username. Please try again.")
+        return "Invalid username. Please try again."
 
 def list_accounts():
     """List all account holders and details."""
     for user_id in range(len(account_holders)):
-        print(f"{account_holders[user_id]}: Current balance: {balances[user_id]:.2f}, \
-        Loans: {loans[user_id]['remaining amount']:.2f}")
+        return f"{account_holders[user_id]}: Current balance: {balances[user_id]:.2f}, \
+        Loans: {loans[user_id]['remaining amount']:.2f}"
 
 def transfer_funds():
     """Transfer funds between two accounts."""
@@ -118,16 +117,16 @@ def transfer_funds():
                     transaction_histories[user_id].append(-money_to_transfer)
                     balances[recipient_id] += money_to_transfer
                     transaction_histories[recipient_id].append(+money_to_transfer)
-                    print(f"{money_to_transfer} successfully transferred to {recipient} ")
+                    return f"{money_to_transfer} successfully transferred to {recipient} "
                 else:
-                    print("Sorry, not enough money!")
+                    return "Sorry, not enough money!"
             else:
-                print("Invalid recipient username")
+                return "Invalid recipient username"
 
         else:
-            print("Wrong password. Please try again.")
+            return "Wrong password. Please try again."
     else:
-        print("Invalid username. Please try again.")
+        return "Invalid username. Please try again."
 
 def view_transaction_history():
     """View transactions for an account."""
@@ -137,13 +136,12 @@ def view_transaction_history():
         password = input("Please enter your password:")
 
         if password == account_passwords[user_id]:
-            print(f"{username}'s transaction history:")
-            print(*transaction_histories[user_id], sep="\n")
+            return f"{username}'s transaction history: \n{'\n'.join([str(pay) for pay in transaction_histories])}"
 
         else:
-            print("Wrong password. Please try again.")
+            return "Wrong password. Please try again."
     else:
-        print("Invalid username. Please try again.")
+        return "Invalid username. Please try again."
 
 def apply_for_loan():
     """Allow user to apply for a loan."""
@@ -155,7 +153,7 @@ def apply_for_loan():
         if password == account_passwords[user_id]:
             loan_amount = float(input("Enter amount you want to loan:"))
             if loan_amount not in range(0, 10001):
-                print("Wrong amount!Amount must be in range 1 to 10000")
+                return "Wrong amount!Amount must be in range 1 to 10000"
             else:
                 term_in_years = int(input("Enter desired term in years:"))
                 interest = loan_amount * INTEREST_RATE * term_in_years
@@ -167,13 +165,13 @@ def apply_for_loan():
                 balances[user_id] += amount_due
                 transaction_histories[user_id].append(+amount_due)
 
-                print(f"Your interest rate is: {INTEREST_RATE*100}%")
-                print(f"Amount due on the loan is {amount_due:.2f}")
-                print(f"Minimum monthly loan payment: {minimal_monthly_payment:.2f}")
+                return f"Your interest rate is: {INTEREST_RATE*100}%\
+                \nAmount due on the loan is {amount_due:.2f}\
+                \nMinimum monthly loan payment: {minimal_monthly_payment:.2f}"
         else:
-            print("Wrong password. Please try again.")
+            return "Wrong password. Please try again."
     else:
-        print("Invalid username. Please try again.")
+        return "Invalid username. Please try again."
 
 def repay_loan():
     """Allow user to repay a loan."""
@@ -188,25 +186,25 @@ def repay_loan():
                 loans[user_id]['remaining amount'] -= payment
                 balances[user_id] -= payment
                 transaction_histories[user_id].append(-payment)
-                print("Successful payment!")
+                return "Successful payment!"
 
             elif loans[user_id]['monthly_payment'] > payment:
-                print("Amount is lower than minimum monthly payment!")
+                return "Amount is lower than minimum monthly payment!"
 
             elif payment > loans[user_id]['remaining amount']:
-                print("Amount is greater than remaining amount on loan")
+                return "Amount is greater than remaining amount on loan"
 
         else:
-            print("Wrong password. Please try again.")
+            return "Wrong password. Please try again."
     else:
-        print("Invalid username. Please try again.")
+        return "Invalid username. Please try again."
 
 def identify_card_type():
     """Identify type of credit card."""
     card_number = input("Please enter your card number (must be 16 digits long):")
 
     if len(card_number) != 16:
-        print("Wrong length of card number!")
+        return "Wrong length of card number!"
     else:
         card_type = ""
         if card_number.startswith("4"):
@@ -218,7 +216,7 @@ def identify_card_type():
         else:
             card_type = "Other"
 
-        print(card_type)
+        return card_type
 
 def main():
     """Run the banking system."""
@@ -227,25 +225,25 @@ def main():
         choice = int(input("Enter your choice: "))
         # Map choices to functions
         if choice == 1:
-            create_account()
+            print(create_account())
         elif choice == 2:
-            deposit()
+            print(deposit())
         elif choice == 3:
-            withdraw()
+            print(withdraw())
         elif choice == 4:
-            check_balance()
+            print(check_balance())
         elif choice == 5:
-            list_accounts()
+            print(list_accounts())
         elif choice == 6:
-            transfer_funds()
+            print(transfer_funds())
         elif choice == 7:
-            view_transaction_history()
+            print(view_transaction_history())
         elif choice == 8:
-            apply_for_loan()
+            print(apply_for_loan())
         elif choice == 9:
-            repay_loan()
+            print(repay_loan())
         elif choice == 10:
-            identify_card_type()
+            print(identify_card_type())
         elif choice == 0:
             print("Goodbye! 👋")
             break
