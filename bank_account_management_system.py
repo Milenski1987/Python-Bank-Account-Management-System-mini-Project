@@ -25,7 +25,7 @@ def display_menu():
     print("🔟 Identify Credit Card Type")
     print("0️⃣ Exit")
 
-def create_account():
+def create_account() -> str:
     """Create a new account."""
     username = input("Please add desired username:")
     if username in account_holders:
@@ -39,7 +39,7 @@ def create_account():
         account_passwords.append(password)
         return "Account created successfully!"
 
-def deposit():
+def deposit() -> str:
     """Deposit money into an account."""
     username = input("Please enter your username:")
     if username in account_holders:
@@ -52,12 +52,10 @@ def deposit():
             balances[user_id] += money_to_deposit
             transaction_histories[user_id].append(+money_to_deposit)
             return f"{money_to_deposit:.2f} successfully deposited!"
-        else:
-            return "Wrong password. Please try again."
-    else:
-        return "Invalid username. Please try again."
+        return "Wrong password. Please try again."
+    return "Invalid username. Please try again."
 
-def withdraw():
+def withdraw() -> str:
     """Withdraw money from an account."""
     username = input("Please enter your username:")
     if username in account_holders:
@@ -71,14 +69,11 @@ def withdraw():
                 balances[user_id] -= money_to_withdraw
                 transaction_histories[user_id].append(-money_to_withdraw)
                 return f"{money_to_withdraw:.2f} withdrawn successfully!"
-            else:
-                return "Sorry, not enough money!"
-        else:
-            return "Wrong password. Please try again."
-    else:
-        return "Invalid username. Please try again."
+            return "Sorry, not enough money!"
+        return "Wrong password. Please try again."
+    return "Invalid username. Please try again."
 
-def check_balance():
+def check_balance() -> str:
     """Check balance of an account."""
     username = input("Please enter your username:")
 
@@ -88,19 +83,16 @@ def check_balance():
 
         if password == account_passwords[user_id]:
             return f"{username}'s account balance:\n{balances[user_id]:.2f}"
+        return "Wrong password. Please try again."
+    return "Invalid username. Please try again."
 
-        else:
-            return "Wrong password. Please try again."
-    else:
-        return "Invalid username. Please try again."
-
-def list_accounts():
+def list_accounts() -> str:
     """List all account holders and details."""
     for user_id in range(len(account_holders)):
         return f"{account_holders[user_id]}: Current balance: {balances[user_id]:.2f}, \
         Loans: {loans[user_id]['remaining amount']:.2f}"
 
-def transfer_funds():
+def transfer_funds() -> str:
     """Transfer funds between two accounts."""
     username = input("Please enter your username:")
     if username in account_holders:
@@ -118,17 +110,12 @@ def transfer_funds():
                     balances[recipient_id] += money_to_transfer
                     transaction_histories[recipient_id].append(+money_to_transfer)
                     return f"{money_to_transfer} successfully transferred to {recipient} "
-                else:
-                    return "Sorry, not enough money!"
-            else:
-                return "Invalid recipient username"
+                return "Sorry, not enough money!"
+            return "Invalid recipient username"
+        return "Wrong password. Please try again."
+    return "Invalid username. Please try again."
 
-        else:
-            return "Wrong password. Please try again."
-    else:
-        return "Invalid username. Please try again."
-
-def view_transaction_history():
+def view_transaction_history() -> str:
     """View transactions for an account."""
     username = input("Please enter your username:")
     if username in account_holders:
@@ -137,13 +124,10 @@ def view_transaction_history():
 
         if password == account_passwords[user_id]:
             return f"{username}'s transaction history: \n{'\n'.join([str(pay) for pay in transaction_histories])}"
+        return "Wrong password. Please try again."
+    return "Invalid username. Please try again."
 
-        else:
-            return "Wrong password. Please try again."
-    else:
-        return "Invalid username. Please try again."
-
-def apply_for_loan():
+def apply_for_loan() -> str:
     """Allow user to apply for a loan."""
     username = input("Please enter your username:")
     if username in account_holders:
@@ -168,12 +152,10 @@ def apply_for_loan():
                 return f"Your interest rate is: {INTEREST_RATE*100}%\
                 \nAmount due on the loan is {amount_due:.2f}\
                 \nMinimum monthly loan payment: {minimal_monthly_payment:.2f}"
-        else:
-            return "Wrong password. Please try again."
-    else:
-        return "Invalid username. Please try again."
+        return "Wrong password. Please try again."
+    return "Invalid username. Please try again."
 
-def repay_loan():
+def repay_loan() -> str:
     """Allow user to repay a loan."""
     username = input("Please enter your username:")
     if username in account_holders:
@@ -193,13 +175,10 @@ def repay_loan():
 
             elif payment > loans[user_id]['remaining amount']:
                 return "Amount is greater than remaining amount on loan"
+        return "Wrong password. Please try again."
+    return "Invalid username. Please try again."
 
-        else:
-            return "Wrong password. Please try again."
-    else:
-        return "Invalid username. Please try again."
-
-def identify_card_type():
+def identify_card_type() -> str:
     """Identify type of credit card."""
     card_number = input("Please enter your card number (must be 16 digits long):")
 
@@ -249,6 +228,7 @@ def main():
             break
         else:
             print("❌ Invalid choice. Try again!")
+
 
 if __name__ == "__main__":
     main()
