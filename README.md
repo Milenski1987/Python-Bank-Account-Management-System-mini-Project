@@ -1,4 +1,5 @@
-# 🌟 Bank Account Management System 🌟
+# 🌟 Bank Account Management System 🌟   
+### Made by [Milen Nikolov](https://www.linkedin.com/in/milen-nikolov-62455034b/)
 
 ## 💰 Bank Account Management System built with Python with following features:
 
