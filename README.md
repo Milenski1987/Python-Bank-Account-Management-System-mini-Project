@@ -3,7 +3,8 @@
 
 ## 💰 Bank Account Management System built with Python with following features:
 
-<img align="center" width="1000" height="500" src="https://github.com/user-attachments/assets/9c7bab4f-9406-4b00-9f29-3095de06386a">
+![image](https://github.com/user-attachments/assets/ae6e5b05-10b5-419b-9517-1f61c379f1b5)
+
 
 
 1. 🏦 Create a Bank Account
