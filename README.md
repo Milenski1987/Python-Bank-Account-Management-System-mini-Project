@@ -25,7 +25,7 @@
 
 ---
 
- #### 🎯 The following features will be added in the next version:
+ ### 🎯 The following features will be added in the next version:
  - information about registered users to be stored
  - random-generated IBAN for every registered user
  - option to apply for a loan
