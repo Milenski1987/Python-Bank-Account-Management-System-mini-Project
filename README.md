@@ -23,6 +23,7 @@
 5. 🤑 Transaction History
    - registered users can get full information about recent transactions
 
+---
 
  #### 🎯 The following features will be added in the next version:
  - information about registered users to be stored
