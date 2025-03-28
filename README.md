@@ -45,5 +45,5 @@
     <a href="#"><img src="https://github.com/tandpfun/skill-icons/blob/main/icons/Apple-Light.svg" title="Apple" **alt="Apple" width="40" height="40" /></a>
 </p>
 
-
-### Made by [Milen Nikolov](https://www.linkedin.com/in/milen-nikolov-62455034b/)
+--- 
+### Made by [Milen Nikolov](https://www.milen-nikolov.com)
