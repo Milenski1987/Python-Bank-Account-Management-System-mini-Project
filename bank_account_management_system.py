@@ -1,234 +1,306 @@
-# Enhanced Bank Account Management System
+import re
+import tkinter as tk
+from tkinter import ttk
 
-# 🏦 Data Structures to Store Information
-account_holders = []# Account names
-account_passwords = []      #Account password
-balances = []         # Account balances
-transaction_histories = []  # Account transaction logs
-loans = []            # Account loan details
 
-MAX_LOAN_AMOUNT = 10000
-INTEREST_RATE = 0.03
+class ChosenNumberOutOfRange(Exception):
+    pass
 
-def display_menu():
-    """Main menu for banking system."""
-    print("\n🌟 Welcome to Enhanced Bank System 🌟")
-    print("1️⃣ Create Account")
-    print("2️⃣ Deposit Money")
-    print("3️⃣ Withdraw Money")
-    print("4️⃣ Check Balance")
-    print("5️⃣ List All Accounts")
-    print("6️⃣ Transfer Funds")
-    print("7️⃣ View Transaction History")
-    print("8️⃣ Apply for Loan")
-    print("9️⃣ Repay Loan")
-    print("🔟 Identify Credit Card Type")
-    print("0️⃣ Exit")
+class InvalidUsername(Exception):
+    pass
 
-def create_account() -> str:
-    """Create a new account."""
-    username = input("Please add desired username:")
-    if username in account_holders:
-        return "This username is already in use. Please try again."
-    else:
-        password = input("Enter desired password for your account:")
-        account_holders.append(username)
-        balances.append(0)
-        loans.append({})
-        transaction_histories.append([])
-        account_passwords.append(password)
-        return "Account created successfully!"
+class InvalidPassword(Exception):
+    pass
 
-def deposit() -> str:
-    """Deposit money into an account."""
-    username = input("Please enter your username:")
-    if username in account_holders:
-        user_id = account_holders.index(username)
-        password = input("Please enter your password:")
+class MissingRequiredInformation(Exception):
+    pass
 
-        if password == account_passwords[user_id]:
-            money_to_deposit = float(input("Enter amount to deposit:"))
+class NegativeAmount(Exception):
+    pass
 
-            balances[user_id] += money_to_deposit
-            transaction_histories[user_id].append(+money_to_deposit)
-            return f"{money_to_deposit:.2f} successfully deposited!"
-        return "Wrong password. Please try again."
-    return "Invalid username. Please try again."
+class InsufficientFunds(Exception):
+    pass
 
-def withdraw() -> str:
-    """Withdraw money from an account."""
-    username = input("Please enter your username:")
-    if username in account_holders:
-        user_id = account_holders.index(username)
-        password = input("Please enter your password:")
+account_holders = {}
 
-        if password == account_passwords[user_id]:
-            money_to_withdraw = float(input("Enter amount to withdraw:"))
 
-            if money_to_withdraw <= balances[user_id]:
-                balances[user_id] -= money_to_withdraw
-                transaction_histories[user_id].append(-money_to_withdraw)
-                return f"{money_to_withdraw:.2f} withdrawn successfully!"
-            return "Sorry, not enough money!"
-        return "Wrong password. Please try again."
-    return "Invalid username. Please try again."
-
-def check_balance() -> str:
-    """Check balance of an account."""
-    username = input("Please enter your username:")
-
-    if username in account_holders:
-        user_id = account_holders.index(username)
-        password = input("Please enter your password:")
-
-        if password == account_passwords[user_id]:
-            return f"{username}'s account balance:\n{balances[user_id]:.2f}"
-        return "Wrong password. Please try again."
-    return "Invalid username. Please try again."
-
-def list_accounts() -> str:
-    """List all account holders and details."""
-    for user_id in range(len(account_holders)):
-        return f"{account_holders[user_id]}: Current balance: {balances[user_id]:.2f}, \
-        Loans: {loans[user_id]['remaining amount']:.2f}"
-
-def transfer_funds() -> str:
-    """Transfer funds between two accounts."""
-    username = input("Please enter your username:")
-    if username in account_holders:
-        user_id = account_holders.index(username)
-        password = input("Please enter your password:")
-
-        if password == account_passwords[user_id]:
-            recipient = input("Please enter recipient username:")
-            if recipient in account_holders:
-                recipient_id = account_holders.index(recipient)
-                money_to_transfer = float(input("Enter amount to transfer:"))
-                if money_to_transfer <= balances[user_id]:
-                    balances[user_id] -= money_to_transfer
-                    transaction_histories[user_id].append(-money_to_transfer)
-                    balances[recipient_id] += money_to_transfer
-                    transaction_histories[recipient_id].append(+money_to_transfer)
-                    return f"{money_to_transfer} successfully transferred to {recipient} "
-                return "Sorry, not enough money!"
-            return "Invalid recipient username"
-        return "Wrong password. Please try again."
-    return "Invalid username. Please try again."
-
-def view_transaction_history() -> str:
-    """View transactions for an account."""
-    username = input("Please enter your username:")
-    if username in account_holders:
-        user_id = account_holders.index(username)
-        password = input("Please enter your password:")
-
-        if password == account_passwords[user_id]:
-            return f"{username}'s transaction history: \n{'\n'.join([str(pay) for pay in transaction_histories])}"
-        return "Wrong password. Please try again."
-    return "Invalid username. Please try again."
-
-def apply_for_loan() -> str:
-    """Allow user to apply for a loan."""
-    username = input("Please enter your username:")
-    if username in account_holders:
-        user_id = account_holders.index(username)
-        password = input("Please enter your password:")
-
-        if password == account_passwords[user_id]:
-            loan_amount = float(input("Enter amount you want to loan:"))
-            if loan_amount not in range(0, 10001):
-                return "Wrong amount!Amount must be in range 1 to 10000"
-            else:
-                term_in_years = int(input("Enter desired term in years:"))
-                interest = loan_amount * INTEREST_RATE * term_in_years
-                amount_due = loan_amount + interest
-                minimal_monthly_payment = amount_due / (term_in_years * 12)
-
-                loans[user_id]['remaining amount'] = amount_due
-                loans[user_id]["monthly_payment"] = minimal_monthly_payment
-                balances[user_id] += amount_due
-                transaction_histories[user_id].append(+amount_due)
-
-                return f"Your interest rate is: {INTEREST_RATE*100}%\
-                \nAmount due on the loan is {amount_due:.2f}\
-                \nMinimum monthly loan payment: {minimal_monthly_payment:.2f}"
-        return "Wrong password. Please try again."
-    return "Invalid username. Please try again."
-
-def repay_loan() -> str:
-    """Allow user to repay a loan."""
-    username = input("Please enter your username:")
-    if username in account_holders:
-        user_id = account_holders.index(username)
-        password = input("Please enter your password:")
-
-        if password == account_passwords[user_id]:
-            payment = float(input(f"Enter amount to repay (minimum payment:{loans[user_id]['monthly_payment']:.2f}):"))
-            if loans[user_id]['monthly_payment'] <= payment <= loans[user_id]['remaining amount']:
-                loans[user_id]['remaining amount'] -= payment
-                balances[user_id] -= payment
-                transaction_histories[user_id].append(-payment)
-                return "Successful payment!"
-
-            elif loans[user_id]['monthly_payment'] > payment:
-                return "Amount is lower than minimum monthly payment!"
-
-            elif payment > loans[user_id]['remaining amount']:
-                return "Amount is greater than remaining amount on loan"
-        return "Wrong password. Please try again."
-    return "Invalid username. Please try again."
-
-def identify_card_type() -> str:
-    """Identify type of credit card."""
-    card_number = input("Please enter your card number (must be 16 digits long):")
-
-    if len(card_number) != 16:
-        return "Wrong length of card number!"
-    else:
-        card_type = ""
-        if card_number.startswith("4"):
-            card_type = "Visa"
-        elif card_number.startswith(("51", "52", "53", "54", "55")):
-            card_type = "MasterCard"
-        elif card_number.startswith(("34", "37")):
-            card_type = "American Express"
+def deposit(current_user):
+    # function to deposit money to current user account
+    def deposit_money():
+        response = ""
+        try:
+            deposit_text.delete("1.0", 'end')
+            amount = float(deposit_entry.get())
+            if amount <= 0:
+                raise NegativeAmount
+        except ValueError:
+            response = "Please enter valid number"
+        except NegativeAmount:
+            response = "Amount must be positive number"
         else:
-            card_type = "Other"
+            response = "Successful transaction"
+            account_holders[current_user]['transactions'].append(f"{amount:.2f}")
+            account_holders[current_user]['balance'] += float(f"{amount:.2f}")
+        finally:
+            deposit_text.insert(tk.END, response)
 
-        return card_type
+    #create deposit function window
+    deposit_screen = tk.Tk()
+    deposit_screen.geometry("200x200")
+    deposit_screen.title("Deposit")
 
-def main():
-    """Run the banking system."""
-    while True:
-        display_menu()
-        choice = int(input("Enter your choice: "))
-        # Map choices to functions
-        if choice == 1:
-            print(create_account())
-        elif choice == 2:
-            print(deposit())
-        elif choice == 3:
-            print(withdraw())
-        elif choice == 4:
-            print(check_balance())
-        elif choice == 5:
-            print(list_accounts())
-        elif choice == 6:
-            print(transfer_funds())
-        elif choice == 7:
-            print(view_transaction_history())
-        elif choice == 8:
-            print(apply_for_loan())
-        elif choice == 9:
-            print(repay_loan())
-        elif choice == 10:
-            print(identify_card_type())
-        elif choice == 0:
-            print("Goodbye! 👋")
-            break
+    deposit_label = tk.Label(deposit_screen, text="How much you want to deposit: ")
+    deposit_label.pack()
+    deposit_entry = tk.Entry(deposit_screen, justify="center")
+    deposit_entry.pack()
+    deposit_text = tk.Text(deposit_screen, width=40, height=2)
+    deposit_text.pack()
+    deposit_button = tk.Button(deposit_screen, text="Deposit", command=deposit_money)
+    deposit_button.pack()
+    deposit_screen.mainloop()
+
+
+def withdraw(current_user):
+    # function to withdraw money to current user account
+    def withdraw_money():
+        response = ""
+        try:
+            withdraw_text.delete("1.0", 'end')
+            amount = float(withdraw_entry.get())
+            if account_holders[current_user]['balance'] <= 0 or account_holders[current_user]['balance'] < amount:
+                raise InsufficientFunds
+            elif amount <= 0:
+                raise NegativeAmount
+        except InsufficientFunds:
+            response = "Invalid operation. Insufficient funds!"
+        except ValueError:
+            response = "Please enter valid number"
+        except NegativeAmount:
+            response = "Amount must be positive number"
         else:
-            print("❌ Invalid choice. Try again!")
+            response = "Successful transaction"
+            account_holders[current_user]['transactions'].append(f"-{amount:.2f}")
+            account_holders[current_user]['balance'] -= float(f"{amount:.2f}")
+        finally:
+            withdraw_text.insert(tk.END, response)
+
+    # create withdraw function window
+    withdraw_screen = tk.Tk()
+    withdraw_screen.geometry("200x200")
+    withdraw_screen.title("Deposit")
+
+    withdraw_label = tk.Label(withdraw_screen, text="How much you want to withdraw: ")
+    withdraw_label.pack()
+    withdraw_entry = tk.Entry(withdraw_screen, justify="center")
+    withdraw_entry.pack()
+    withdraw_text = tk.Text(withdraw_screen, width=40, height=2)
+    withdraw_text.pack()
+    withdraw_button = tk.Button(withdraw_screen, text="Withdraw", command=withdraw_money)
+    withdraw_button.pack()
+    withdraw_screen.mainloop()
+
+
+def check_balance(current_user):
+    #function that checks and shows current user balance
+
+    response = f"Current balance: {account_holders[current_user]['balance']:.2f}"
+    #create balance window
+    balance_screen = tk.Tk()
+    balance_screen.geometry("200x200")
+    balance_screen.title("Show balance")
+    balance_text = tk.Text(balance_screen, width=50, height=2)
+    balance_text.pack()
+    balance_text.insert(tk.END, response)
+    balance_screen.mainloop()
+
+
+def view_transaction_history(current_user):
+    #function that shows all current user transactions
+
+    response = f'Recent transactions: \n{", ".join(list(map(str,account_holders[current_user]['transactions'])))}'
+    #create transactions window
+    transactions_screen = tk.Tk()
+    transactions_screen.geometry("600x600")
+    transactions_screen.title("Deposit")
+    transactions_text = tk.Text(transactions_screen, width=60, height=15)
+    transactions_text.pack()
+    transactions_text.insert(tk.END, response)
+    transactions_screen.mainloop()
+
+
+def valid_username(current_username):
+    #user validation
+    if current_username not in account_holders and len(current_username) in range(6,21) and all(char.isalnum for char in current_username):
+        return True
+    return False
+
+
+def valid_password(current_password):
+    #password validation with RegEx
+    password_pattern = r"[A-Z][a-z0-9]{7,19}"
+    result = re.search(password_pattern, current_password)
+    if result:
+        return True
+    return False
+
+
+def register():
+    #register function with registration form interface and registration form logic
+    def register_username():
+        response = ""
+        try:
+            register_text.delete("1.0", 'end')
+            username = username_entry.get()
+            password = password_entry.get()
+            first_name = first_name_entry.get()
+            last_name = last_name_entry.get()
+            if valid_username(username) and valid_password(password) and username and password and first_name and last_name:
+                account_holders[username] = {'password': password,
+                                             'name':f"{first_name} {last_name}",
+                                             'balance': 0,
+                                             'loans': 0,
+                                             'transactions': []}
+                response = "User Successfully Registered!"
+            elif not username or not password or not first_name or not last_name:
+                raise MissingRequiredInformation
+            elif not valid_username(username):
+                raise InvalidUsername
+            elif not valid_password(password):
+                raise InvalidPassword
+        except MissingRequiredInformation:
+            response = "All fields marked with * are required..."
+        except InvalidUsername:
+            response = "Invalid username or username already taken. Please try again..."
+        except InvalidPassword:
+            response = "Invalid password! Please try again..."
+        finally:
+            register_text.insert(tk.END, response)
+
+
+    #create register form interface
+    register_screen = tk.Tk()
+    register_screen.geometry("600x600")
+    register_screen.title("Register")
+
+    username_label = tk.Label(register_screen, text="*Enter username (6-20 symbols, only letters and digits: ")
+    username_label.pack()
+    username_entry = tk.Entry(register_screen, justify="center")
+    username_entry.pack()
+    password_label = tk.Label(register_screen, text="*Enter password "
+                                                    "(8-20 symbols,first letter must be Capital then only letters and digits: ")
+    password_label.pack()
+    password_entry = tk.Entry(register_screen, justify="center", show="*")
+    password_entry.pack()
+    first_name_label = tk.Label(register_screen, text="*Enter first name: ")
+    first_name_label.pack()
+    first_name_entry = tk.Entry(register_screen, justify="center")
+    first_name_entry.pack()
+    last_name_label = tk.Label(register_screen, text="*Enter last name: ")
+    last_name_label.pack()
+    last_name_entry = tk.Entry(register_screen, justify="center")
+    last_name_entry.pack()
+    information = tk.Label(register_screen, text="*Required fields")
+    information.pack()
+    register_text = tk.Text(register_screen,width=70, height=2 )
+    register_text.pack()
+    register_screen_button = tk.Button(register_screen, text="Register", command=register_username)
+    register_screen_button.pack()
+    register_screen.mainloop()
+
+
+def login():
+    #login function with login form interface and login form logic
+
+    def login_username():
+        #login form logic
+        response = ""
+        try:
+            login_text.delete("1.0", "end")
+            user_id = username_entry.get()
+            password = password_entry.get()
+            if user_id not in account_holders:
+                raise InvalidUsername
+            if password != account_holders[user_id]['password']:
+                raise InvalidPassword
+        except InvalidUsername:
+            response = "Invalid username. Please try again..."
+            login_text.insert(tk.END, response)
+        except InvalidPassword:
+            response = "Wrong password! Please try again..."
+            login_text.insert(tk.END, response)
+        else:
+            root.destroy()
+            login_screen.destroy()
+            welcome_screen(user_id, account_holders[user_id]['name'])
+
+
+    #create login form screen
+    login_screen = tk.Tk()
+    login_screen.geometry("600x600")
+    login_screen.title("Login")
+
+    username_label = tk.Label(login_screen, text="Enter your username: ")
+    username_label.pack()
+    username_entry = tk.Entry(login_screen, justify="center")
+    username_entry.pack()
+    password_label = tk.Label(login_screen, text="Enter your password: ")
+    password_label.pack()
+    password_entry = tk.Entry(login_screen, show="*", justify="center")
+    password_entry.pack()
+    login_text = tk.Text(login_screen, width=60, height=2)
+    login_text.pack()
+    login_screen_button = tk.Button(login_screen, text="Login", command=login_username)
+    login_screen_button.pack()
+    login_screen.mainloop()
+
+
+def logout():
+    #function to exit from application
+    exit()
+
+
+def welcome_screen(user, name):
+    #create welcome screen after successful login
+    welcome = tk.Tk()
+    welcome.geometry("600x600")
+    welcome.title("Welcome")
+
+    welcome_canvas = tk.Canvas(welcome, width=600, height=600)
+    welcome_canvas.pack(fill="both", expand=True)
+    welcome_canvas.create_text(290, 40, text=f"Welcome to your account, {name}", font=("Arial", 25, "bold"), fill="white")
+    welcome_canvas.create_text(300, 140, text="Actions:", font=("Arial", 15), fill="white")
+    welcome_canvas.create_text(300, 490, text="Want to quit? ", font=("Arial", 15,"bold"), fill="white")
+    deposit_button = ttk.Button(welcome_canvas, width=15, text="Deposit", command=lambda: deposit(user))
+    withdraw_button = ttk.Button(welcome_canvas, width=15, text="Withdraw", command=lambda: withdraw(user))
+    check_balance_button = ttk.Button(welcome_canvas, width=15, text="Check balance", command=lambda: check_balance(user))
+    view_transaction_history_button = ttk.Button(welcome_canvas, width=15, text="View transactions", command=lambda: view_transaction_history(user))
+    exit_from_welcome_button = ttk.Button(welcome_canvas, width=15, text="Exit", command=lambda: logout())
+    deposit_button.place(x=210, y=150)
+    withdraw_button.place(x=210, y=200)
+    check_balance_button.place(x=210, y=250)
+    view_transaction_history_button.place(x=210, y=300)
+    exit_from_welcome_button.place(x=210, y=500)
+    welcome.mainloop()
 
 
 if __name__ == "__main__":
-    main()
+    #create main window
+    root = tk.Tk()
+    root.title("Bank Account System")
+    root.geometry("600x600")
+
+    my_canvas = tk.Canvas(root, width= 600, height=600)
+    my_canvas.pack(fill="both", expand=True)
+
+    #create main screen
+    my_canvas.create_text(310, 100, text="Welcome to Bank Account System ", font=("Arial", 20, "bold"), fill="white")
+    my_canvas.create_text(300, 190, text="Don't have account? ", font=("Arial", 15), fill="white")
+    my_canvas.create_text(300, 290, text="Already registered? ", font=("Arial", 15), fill="white")
+    my_canvas.create_text(300, 490, text="Want to quit? ", font=("Arial", 15,"bold"), fill="white")
+    register_button = ttk.Button(my_canvas, width=15, text="Register", command=lambda: register())
+    login_button = ttk.Button(my_canvas, width=15, text="Login", command=lambda: login())
+    exit_button = ttk.Button(my_canvas, width=15, text="Exit", command=lambda: logout())
+    register_button.place(x=210, y=200)
+    login_button.place(x=210, y=300)
+    exit_button.place(x=210, y=500)
+    root.mainloop()
