@@ -12,16 +12,16 @@
    - exit application
  
 2. 💵 Deposit Money
-  - registered user can deposit money to their accounts
+   - registered user can deposit money to their accounts
     
-3. Withdraw Money
-  - registered users can withdraw money from their accounts if an amount is available
+3. 💶 Withdraw Money
+   - registered users can withdraw money from their accounts if an amount is available
     
-4. Check Balance
-  -registered users can check the balance of an account
+4. ⚖️ Check Balance
+   - registered users can check the balance of an account
     
-5. Transaction History
-  -registered users can get full information about recent transactions
+5. 🤑 Transaction History
+   - registered users can get full information about recent transactions
 
 
  #### 🎯 The following features will be added in the next version:
