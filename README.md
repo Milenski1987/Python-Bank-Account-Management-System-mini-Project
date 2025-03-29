@@ -1,5 +1,5 @@
 # 🌟 Bank Account Management System 🌟   
-
+A Bank Account Management System is a secure application designed to manage customer bank accounts. It allows users to create accounts, check balances, deposit and withdraw money, and track transaction history. The system ensures data security, user authentication, and smooth financial operations, making banking more accessible and hassle-free.
 
 ![image](https://github.com/user-attachments/assets/d379f945-4371-416d-a5d6-17889cd51c61)
 
