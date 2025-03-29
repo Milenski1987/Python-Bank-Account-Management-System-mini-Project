@@ -1,5 +1,1 @@
-{
-  "administrator": {
-    "password": "Admin12345"
-  }
-}
+{"administrator": {"password": "Admin12345"}, "milenski": {"password": "Milen1908", "name": "Milen Nikolov", "balance": 0, "loans": 0, "transactions": []}}

@@ -228,6 +228,8 @@ def register():
                                              'balance': 0,
                                              'loans': 0,
                                              'transactions': []}
+                with open("data.json", "w") as f:
+                    json.dump(account_holders, f)
                 response = "User Successfully Registered!"
             elif not username or not password or not first_name or not last_name:
                 raise MissingRequiredInformation
