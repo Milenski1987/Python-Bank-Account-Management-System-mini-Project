@@ -1,5 +1,6 @@
 from bank_system import *
 
+
 def deposit_screen(user_id):
     def deposit_money():
         deposit_text.delete("1.0", 'end')

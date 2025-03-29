@@ -1,5 +1,7 @@
 import json
+import os
 import re
+import sys
 import tkinter as tk
 from tkinter import ttk
 import numpy as np
@@ -27,7 +29,15 @@ class Forbidden(Exception):
     pass
 
 
-with open("data.json") as file:
+def resource_path(relative_path):
+    if getattr(sys, 'frozen', False):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
+
+with open(resource_path("data.json")) as file:
     account_holders = json.load(file)
 
 
