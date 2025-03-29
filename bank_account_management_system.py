@@ -53,7 +53,7 @@ def deposit(current_user):
 
     #create deposit function window
     deposit_screen = tk.Tk()
-    deposit_screen.geometry("200x200")
+    deposit_screen.geometry("200x200+100+500")
     deposit_screen.title("Deposit")
 
     deposit_label = tk.Label(deposit_screen, text="How much you want to deposit: ")
@@ -96,7 +96,7 @@ def withdraw(current_user):
 
     # create withdraw function window
     withdraw_screen = tk.Tk()
-    withdraw_screen.geometry("200x200")
+    withdraw_screen.geometry("200x200+100+500")
     withdraw_screen.title("Withdraw")
 
     withdraw_label = tk.Label(withdraw_screen, text="How much you want to withdraw: ")
@@ -118,7 +118,7 @@ def check_balance(current_user):
     response = f"Current balance: {account_holders[current_user]['balance']:.2f}"
     #create balance window
     balance_screen = tk.Tk()
-    balance_screen.geometry("200x200")
+    balance_screen.geometry("200x200+100+500")
     balance_screen.title("Show balance")
     balance_text = tk.Text(balance_screen, width=50, height=2)
     balance_text.pack()
@@ -135,7 +135,7 @@ def view_transaction_history(current_user):
     response = f'Recent transactions: \n{", ".join(list(map(str,account_holders[current_user]['transactions'])))}'
     #create transactions window
     transactions_screen = tk.Tk()
-    transactions_screen.geometry("600x600")
+    transactions_screen.geometry("600x600+100+500")
     transactions_screen.title("Deposit")
     transactions_text = tk.Text(transactions_screen, width=60, height=15)
     transactions_text.pack()
@@ -155,7 +155,7 @@ def list_accounts():
                                        for username in account_holders if username != 'administrator'])}"
     # create window to view accounts
     listing_screen = tk.Tk()
-    listing_screen.geometry("600x600")
+    listing_screen.geometry("600x600+100+500")
     listing_screen.title("Accounts")
     listing_text = tk.Text(listing_screen, width=80, height=25)
     listing_text.pack()
@@ -194,7 +194,7 @@ def remove_username():
 
     # create remove username window
     remove_screen = tk.Tk()
-    remove_screen.geometry("200x200")
+    remove_screen.geometry("200x200+100+500")
     remove_screen.title("Remove user")
 
     remove_label = tk.Label(remove_screen, text="Enter username you want to be removed:")
@@ -283,7 +283,7 @@ def register():
 
     #create register form interface
     register_screen = tk.Tk()
-    register_screen.geometry("600x600")
+    register_screen.geometry("600x600+100+500")
     register_screen.title("Register")
 
     username_label = tk.Label(register_screen, text="*Enter username (6-20 symbols, only letters and digits: ")
@@ -348,7 +348,7 @@ def login():
 
     #create login form screen
     login_screen = tk.Tk()
-    login_screen.geometry("600x600")
+    login_screen.geometry("600x600+100+500")
     login_screen.title("Login")
 
     username_label = tk.Label(login_screen, text="Enter your username: ")
@@ -370,7 +370,7 @@ def login():
 def admin_panel():
     #admin panel
     admin_panel = tk.Tk()
-    admin_panel.geometry("600x600")
+    admin_panel.geometry("600x600+100+500")
     admin_panel.title("Welcome")
 
     admin_canvas = tk.Canvas(admin_panel, width=600, height=600)
@@ -403,7 +403,7 @@ def logout():
 def welcome_screen(user, name):
     #create welcome screen after successful login
     welcome = tk.Tk()
-    welcome.geometry("600x600")
+    welcome.geometry("600x600+100+500")
     welcome.title("Welcome")
 
     welcome_canvas = tk.Canvas(welcome, width=600, height=600)
@@ -428,7 +428,7 @@ def main():
     # create main window
     root = tk.Tk()
     root.title("Bank Account System")
-    root.geometry("600x600")
+    root.geometry("600x600+100+500")
 
     my_canvas = tk.Canvas(root, width=600, height=600)
     my_canvas.pack(fill="both", expand=True)
@@ -438,6 +438,8 @@ def main():
     my_canvas.create_text(300, 190, text="Don't have account? ", font=("Arial", 15), fill="white")
     my_canvas.create_text(300, 290, text="Already registered? ", font=("Arial", 15), fill="white")
     my_canvas.create_text(300, 490, text="Want to quit? ", font=("Arial", 15, "bold"), fill="white")
+    my_canvas.create_text(520, 550, text="made by Milen Nikolov ", font=("Arial", 10, "bold"), fill="white")
+    my_canvas.create_text(520, 570, text="www.milen-nikolov.com ", font=("Arial", 10, "bold"), fill="white")
     register_button = ttk.Button(my_canvas, width=15, text="Register", command=lambda: (root.destroy(), register()))
     login_button = ttk.Button(my_canvas, width=15, text="Login", command=lambda: (root.destroy(), login()))
     exit_button = ttk.Button(my_canvas, width=15, text="Exit", command=lambda: exit())
