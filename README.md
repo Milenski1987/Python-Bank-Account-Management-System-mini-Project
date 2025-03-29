@@ -29,7 +29,10 @@
    - feature to view all user accounts
 
 7. ℹ️ Information about users is stored in a JSON file
-   - username, password, full name, account balance and transaction history are now saved
+   - username, password, full name, account balance, and transaction history are now saved
+
+8. 🔐 Security
+   - added password encryption
 
 ---
 
