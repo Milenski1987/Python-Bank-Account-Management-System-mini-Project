@@ -1,3 +1,4 @@
+import json
 import re
 import tkinter as tk
 from tkinter import ttk
@@ -21,8 +22,9 @@ class NegativeAmount(Exception):
 class InsufficientFunds(Exception):
     pass
 
-account_holders = {}
-
+# account_holders = {}
+with open("data.json") as file:
+    account_holders = json.load(file)
 
 def deposit(current_user):
     # function to deposit money to current user account
@@ -255,6 +257,8 @@ def login():
 
 
 def logout():
+    with open("data.json", "w") as f:
+        json.dump(account_holders, f)
     #function to exit from application
     exit()
 
