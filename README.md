@@ -5,7 +5,7 @@
 
 
 
-## 💰 Bank Account Management System built with Python with the following features:
+## 💰 Bank Account Management System built with Python overview:
 
 1. 🏦 Welcome screen with three options:
    - register a new user
@@ -24,15 +24,30 @@
 5. 🤑 Transaction History
    - registered users can get full information about recent transactions
 
+6. 👨‍💼 Admin Panel:
+   - feature to remove users
+   - feature to view all user accounts
+
+7. ℹ️ Information about users is stored in a JSON file
+   - username, password, full name, account balance and transaction history are now saved
+
+---
+
+### 🙍‍♂️ Current user interface
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/7b7bdb46-2fd0-486d-9642-17b762644c42" width="400" />
+  <img src="https://github.com/user-attachments/assets/74c55d69-86e9-4372-9baa-1fd9e7a87e86" width="400" /> 
+  <img src="https://github.com/user-attachments/assets/98fbfb58-0d6b-4129-ad00-8ee71d1d02d4" width="400" />
+  <img src="https://github.com/user-attachments/assets/3f3b039a-9f3a-4218-a02a-7cb0eb22a4b1" width="400" /> 
+</p>
+
 ---
 
  ### 🎯 The following features will be added in the next version:
  - random-generated IBAN for every registered user
  - option to apply for a loan
- - admin panel with option do remove users
-   
  
-
 ---
 ## ⚙️ Technology stack:
 <p align="left">
