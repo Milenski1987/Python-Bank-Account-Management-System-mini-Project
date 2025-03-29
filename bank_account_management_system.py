@@ -62,6 +62,9 @@ def deposit(current_user):
     deposit_text.pack()
     deposit_button = tk.Button(deposit_screen, text="Deposit", command=deposit_money)
     deposit_button.pack()
+    deposit_button = tk.Button(deposit_screen, text="Back to Welcome screen",
+                                command=lambda: deposit_screen.destroy())
+    deposit_button.pack()
     deposit_screen.mainloop()
 
 
@@ -92,7 +95,7 @@ def withdraw(current_user):
     # create withdraw function window
     withdraw_screen = tk.Tk()
     withdraw_screen.geometry("200x200")
-    withdraw_screen.title("Deposit")
+    withdraw_screen.title("Withdraw")
 
     withdraw_label = tk.Label(withdraw_screen, text="How much you want to withdraw: ")
     withdraw_label.pack()
@@ -101,6 +104,8 @@ def withdraw(current_user):
     withdraw_text = tk.Text(withdraw_screen, width=40, height=2)
     withdraw_text.pack()
     withdraw_button = tk.Button(withdraw_screen, text="Withdraw", command=withdraw_money)
+    withdraw_button.pack()
+    withdraw_button = tk.Button(withdraw_screen, text="Back to Welcome screen", command= lambda: withdraw_screen.destroy())
     withdraw_button.pack()
     withdraw_screen.mainloop()
 
@@ -116,6 +121,9 @@ def check_balance(current_user):
     balance_text = tk.Text(balance_screen, width=50, height=2)
     balance_text.pack()
     balance_text.insert(tk.END, response)
+    balance_button = tk.Button(balance_screen, text="Back to Welcome screen",
+                                command=lambda: balance_screen.destroy())
+    balance_button.pack()
     balance_screen.mainloop()
 
 
@@ -130,6 +138,9 @@ def view_transaction_history(current_user):
     transactions_text = tk.Text(transactions_screen, width=60, height=15)
     transactions_text.pack()
     transactions_text.insert(tk.END, response)
+    transactions_button = tk.Button(transactions_screen, text="Back to Welcome screen",
+                               command=lambda: transactions_screen.destroy())
+    transactions_button.pack()
     transactions_screen.mainloop()
 
 
@@ -147,6 +158,9 @@ def list_accounts():
     listing_text = tk.Text(listing_screen, width=80, height=25)
     listing_text.pack()
     listing_text.insert(tk.END, response)
+    listing_button = tk.Button(listing_screen, text="Back to ADMIN panel",
+                               command=lambda: listing_screen.destroy())
+    listing_button.pack()
     listing_screen.mainloop()
 
 
@@ -192,6 +206,9 @@ def remove_username():
     remove_text = tk.Text(remove_screen, width=40, height=2)
     remove_text.pack()
     remove_button = tk.Button(remove_screen, text="Remove", command=remove_user)
+    remove_button.pack()
+    remove_button = tk.Button(remove_screen, text="Back to ADMIN panel",
+                               command=lambda: remove_screen.destroy())
     remove_button.pack()
     remove_screen.mainloop()
 
@@ -275,6 +292,8 @@ def register():
     register_text.pack()
     register_screen_button = tk.Button(register_screen, text="Register", command=register_username)
     register_screen_button.pack()
+    register_screen_button = tk.Button(register_screen, text="Cancel", command=lambda: (register_screen.destroy(), logout()))
+    register_screen_button.pack()
     register_screen.mainloop()
 
 
@@ -301,11 +320,11 @@ def login():
             login_text.insert(tk.END, response)
         else:
             if user_id == "administrator" and password == account_holders[user_id]['password']:
-                root.destroy()
+                # root.destroy()
                 login_screen.destroy()
                 admin_panel()
             else:
-                root.destroy()
+                # root.destroy()
                 login_screen.destroy()
                 welcome_screen(user_id, account_holders[user_id]['name'])
 
@@ -327,6 +346,8 @@ def login():
     login_text.pack()
     login_screen_button = tk.Button(login_screen, text="Login", command=login_username)
     login_screen_button.pack()
+    login_screen_button = tk.Button(login_screen, text="Cancel", command= lambda: (login_screen.destroy(), logout()))
+    login_screen_button.pack()
     login_screen.mainloop()
 
 def admin_panel():
@@ -346,7 +367,7 @@ def admin_panel():
     list_account_button = ttk.Button(admin_canvas, width=15, text="Show accounts", command=lambda: list_accounts())
     remove_user_button = ttk.Button(admin_canvas, width=15, text="Remove username", command=lambda: remove_username())
 
-    exit_from_admin_panel_button = ttk.Button(admin_canvas, width=15, text="Log out", command=lambda: logout())
+    exit_from_admin_panel_button = ttk.Button(admin_canvas, width=15, text="Log out", command=lambda: (admin_panel.destroy(), logout()))
     list_account_button.place(x=210, y=150)
     remove_user_button.place(x=210, y=200)
     exit_from_admin_panel_button.place(x=210, y=500)
@@ -359,7 +380,7 @@ def logout():
     with open("data.json", "w") as f:
         json.dump(account_holders, f)
     #function to exit from application
-    exit()
+    main()
 
 
 def welcome_screen(user, name):
@@ -378,7 +399,7 @@ def welcome_screen(user, name):
     withdraw_button = ttk.Button(welcome_canvas, width=15, text="Withdraw", command=lambda: withdraw(user))
     check_balance_button = ttk.Button(welcome_canvas, width=15, text="Check balance", command=lambda: check_balance(user))
     view_transaction_history_button = ttk.Button(welcome_canvas, width=15, text="View transactions", command=lambda: view_transaction_history(user))
-    exit_from_welcome_button = ttk.Button(welcome_canvas, width=15, text="Log out", command=lambda: logout())
+    exit_from_welcome_button = ttk.Button(welcome_canvas, width=15, text="Log out", command=lambda: (welcome.destroy(), logout()))
     deposit_button.place(x=210, y=150)
     withdraw_button.place(x=210, y=200)
     check_balance_button.place(x=210, y=250)
@@ -386,25 +407,27 @@ def welcome_screen(user, name):
     exit_from_welcome_button.place(x=210, y=500)
     welcome.mainloop()
 
-
-if __name__ == "__main__":
-    #create main window
+def main():
+    # create main window
     root = tk.Tk()
     root.title("Bank Account System")
     root.geometry("600x600")
 
-    my_canvas = tk.Canvas(root, width= 600, height=600)
+    my_canvas = tk.Canvas(root, width=600, height=600)
     my_canvas.pack(fill="both", expand=True)
 
-    #create main screen
+    # create main screen
     my_canvas.create_text(310, 100, text="Welcome to Bank Account System ", font=("Arial", 20, "bold"), fill="white")
     my_canvas.create_text(300, 190, text="Don't have account? ", font=("Arial", 15), fill="white")
     my_canvas.create_text(300, 290, text="Already registered? ", font=("Arial", 15), fill="white")
-    my_canvas.create_text(300, 490, text="Want to quit? ", font=("Arial", 15,"bold"), fill="white")
-    register_button = ttk.Button(my_canvas, width=15, text="Register", command=lambda: register())
-    login_button = ttk.Button(my_canvas, width=15, text="Login", command=lambda: login())
+    my_canvas.create_text(300, 490, text="Want to quit? ", font=("Arial", 15, "bold"), fill="white")
+    register_button = ttk.Button(my_canvas, width=15, text="Register", command=lambda: (root.destroy(), register()))
+    login_button = ttk.Button(my_canvas, width=15, text="Login", command=lambda: (root.destroy(), login()))
     exit_button = ttk.Button(my_canvas, width=15, text="Exit", command=lambda: exit())
     register_button.place(x=210, y=200)
     login_button.place(x=210, y=300)
     exit_button.place(x=210, y=500)
     root.mainloop()
+
+if __name__ == "__main__":
+    main()

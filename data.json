@@ -1,1 +1,1 @@
-{"administrator": {"password": "Admin12345"}, "milenski": {"password": "Milen1908", "name": "Milen Nikolov", "balance": 0, "loans": 0, "transactions": []}}
+{"administrator": {"password": "Admin12345"}, "milenski": {"password": "Milen1908", "name": "Milen Nikolov", "balance": 111.0, "loans": 0, "transactions": ["123.00", "-12.00"]}, "velichka": {"password": "Veli4ka4", "name": "Vela Nikolova", "balance": 100.0, "loans": 0, "transactions": ["123.00", "-23.00"]}}
