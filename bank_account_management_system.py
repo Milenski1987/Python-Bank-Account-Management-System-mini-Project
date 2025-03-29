@@ -2,6 +2,7 @@ import json
 import re
 import tkinter as tk
 from tkinter import ttk
+import numpy as np
 
 
 class ChosenNumberOutOfRange(Exception):
@@ -25,9 +26,10 @@ class InsufficientFunds(Exception):
 class Forbidden(Exception):
     pass
 
-# account_holders = {}
+
 with open("data.json") as file:
     account_holders = json.load(file)
+
 
 def deposit(current_user):
     # function to deposit money to current user account
@@ -151,7 +153,7 @@ def list_accounts():
                                        f'Balance: {account_holders[username]['balance']}\n  '
                                            f'Transactions: {', '.join(account_holders[username]['transactions'])}\n' 
                                        for username in account_holders if username != 'administrator'])}"
-    # create transactions window
+    # create window to view accounts
     listing_screen = tk.Tk()
     listing_screen.geometry("600x600")
     listing_screen.title("Accounts")
@@ -212,10 +214,25 @@ def remove_username():
     remove_button.pack()
     remove_screen.mainloop()
 
+def encrypt_password(password):
+    #funtion to encrypt user password for better security
+    key = np.array([[4, 2], [1, 9]])
+    process_init_password = [ord(character) for character in password]
+
+    while len(process_init_password) % 2 != 0:
+        process_init_password.append(0)
+    process_init_password = np.array(process_init_password)
+    process_init_password = process_init_password.reshape(len(process_init_password) // 2, 2)
+    encrypted_matrix = np.dot(process_init_password, key)
+    encrypted_password = ''.join([chr(int(character)) for row in encrypted_matrix for character in row])
+    return encrypted_password
 
 def valid_username(current_username):
     #user validation
-    if current_username not in account_holders and len(current_username) in range(6,21) and all(char.isalnum for char in current_username):
+    if (current_username not in account_holders
+            and current_username.lower() != "admin"
+            and len(current_username) in range(6,21)
+            and all(char.isalnum for char in current_username)):
         return True
     return False
 
@@ -240,7 +257,7 @@ def register():
             first_name = first_name_entry.get()
             last_name = last_name_entry.get()
             if valid_username(username) and valid_password(password) and username and password and first_name and last_name:
-                account_holders[username] = {'password': password,
+                account_holders[username] = {'password': encrypt_password(password),
                                              'name':f"{first_name} {last_name}",
                                              'balance': 0,
                                              'loans': 0,
@@ -292,7 +309,7 @@ def register():
     register_text.pack()
     register_screen_button = tk.Button(register_screen, text="Register", command=register_username)
     register_screen_button.pack()
-    register_screen_button = tk.Button(register_screen, text="Cancel", command=lambda: (register_screen.destroy(), logout()))
+    register_screen_button = tk.Button(register_screen, text="back", command=lambda: (register_screen.destroy(), logout()))
     register_screen_button.pack()
     register_screen.mainloop()
 
@@ -310,7 +327,7 @@ def login():
 
             if user_id not in account_holders:
                 raise InvalidUsername
-            if password != account_holders[user_id]['password']:
+            if encrypt_password(password) != account_holders[user_id]['password']:
                 raise InvalidPassword
         except InvalidUsername:
             response = "Invalid username. Please try again..."
@@ -346,7 +363,7 @@ def login():
     login_text.pack()
     login_screen_button = tk.Button(login_screen, text="Login", command=login_username)
     login_screen_button.pack()
-    login_screen_button = tk.Button(login_screen, text="Cancel", command= lambda: (login_screen.destroy(), logout()))
+    login_screen_button = tk.Button(login_screen, text="back", command= lambda: (login_screen.destroy(), logout()))
     login_screen_button.pack()
     login_screen.mainloop()
 
@@ -379,7 +396,7 @@ def admin_panel():
 def logout():
     with open("data.json", "w") as f:
         json.dump(account_holders, f)
-    #function to exit from application
+    #function to log out of account and back to main screen
     main()
 
 
