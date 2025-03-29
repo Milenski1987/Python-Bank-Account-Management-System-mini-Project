@@ -22,6 +22,9 @@ class NegativeAmount(Exception):
 class InsufficientFunds(Exception):
     pass
 
+class Forbidden(Exception):
+    pass
+
 # account_holders = {}
 with open("data.json") as file:
     account_holders = json.load(file)
@@ -130,6 +133,69 @@ def view_transaction_history(current_user):
     transactions_screen.mainloop()
 
 
+def list_accounts():
+    # function that shows all accounts
+
+    response = f"Accounts: \n\n{'\n'.join([f'{username}:\n  '
+                                       f'Balance: {account_holders[username]['balance']}\n  '
+                                           f'Transactions: {', '.join(account_holders[username]['transactions'])}\n' 
+                                       for username in account_holders if username != 'administrator'])}"
+    # create transactions window
+    listing_screen = tk.Tk()
+    listing_screen.geometry("600x600")
+    listing_screen.title("Accounts")
+    listing_text = tk.Text(listing_screen, width=80, height=25)
+    listing_text.pack()
+    listing_text.insert(tk.END, response)
+    listing_screen.mainloop()
+
+
+def remove_username():
+    # function to remove username from account holders
+    def remove_user():
+        response = ""
+        try:
+            remove_text.delete("1.0", 'end')
+            username = remove_entry.get()
+            password = password_entry.get()
+            if username == 'administrator':
+                raise Forbidden
+            if username not in account_holders:
+                raise InvalidUsername
+            if password != account_holders['administrator']['password']:
+                raise InvalidPassword
+        except Forbidden:
+            response = "Operation not allowed."
+        except InvalidUsername:
+            response = f"{username} doesn't exist"
+        except InvalidPassword:
+            response = "Wrong ADMIN password. Please try again.."
+        else:
+            response = f"{username} successfully removed"
+            del account_holders[username]
+        finally:
+            remove_text.insert(tk.END, response)
+
+    # create remove username window
+    remove_screen = tk.Tk()
+    remove_screen.geometry("200x200")
+    remove_screen.title("Remove user")
+
+    remove_label = tk.Label(remove_screen, text="Enter username you want to be removed:")
+    remove_label.pack()
+    remove_entry = tk.Entry(remove_screen, justify="center")
+    remove_entry.pack()
+    password_label = tk.Label(remove_screen, text="Enter ADMIN password: ")
+    password_label.pack()
+    password_entry = tk.Entry(remove_screen, justify="center", show="*")
+    password_entry.pack()
+    remove_text = tk.Text(remove_screen, width=40, height=2)
+    remove_text.pack()
+    remove_button = tk.Button(remove_screen, text="Remove", command=remove_user)
+    remove_button.pack()
+    remove_screen.mainloop()
+
+
 def valid_username(current_username):
     #user validation
     if current_username not in account_holders and len(current_username) in range(6,21) and all(char.isalnum for char in current_username):
@@ -220,6 +286,7 @@ def login():
             login_text.delete("1.0", "end")
             user_id = username_entry.get()
             password = password_entry.get()
+
             if user_id not in account_holders:
                 raise InvalidUsername
             if password != account_holders[user_id]['password']:
@@ -231,9 +298,14 @@ def login():
             response = "Wrong password! Please try again..."
             login_text.insert(tk.END, response)
         else:
-            root.destroy()
-            login_screen.destroy()
-            welcome_screen(user_id, account_holders[user_id]['name'])
+            if user_id == "administrator" and password == account_holders[user_id]['password']:
+                root.destroy()
+                login_screen.destroy()
+                admin_panel()
+            else:
+                root.destroy()
+                login_screen.destroy()
+                welcome_screen(user_id, account_holders[user_id]['name'])
 
 
     #create login form screen
@@ -255,6 +327,31 @@ def login():
     login_screen_button.pack()
     login_screen.mainloop()
 
+def admin_panel():
+    #admin panel
+    admin_panel = tk.Tk()
+    admin_panel.geometry("600x600")
+    admin_panel.title("Welcome")
+
+    admin_canvas = tk.Canvas(admin_panel, width=600, height=600)
+    admin_canvas.pack(fill="both", expand=True)
+    admin_canvas.create_text(290, 40, text=f"ADMIN panel", font=("Arial", 25, "bold"),
+                               fill="RED")
+    admin_canvas.create_text(300, 550,
+                               text="To ensure your operations are saved, please click 'Log Out' before exiting.",
+                               font=("Arial", 15, "bold"), fill="white")
+    admin_canvas.create_text(300, 490, text="Want to quit? ", font=("Arial", 15, "bold"), fill="white")
+    list_account_button = ttk.Button(admin_canvas, width=15, text="Show accounts", command=lambda: list_accounts())
+    remove_user_button = ttk.Button(admin_canvas, width=15, text="Remove username", command=lambda: remove_username())
+
+    exit_from_admin_panel_button = ttk.Button(admin_canvas, width=15, text="Log out", command=lambda: logout())
+    list_account_button.place(x=210, y=150)
+    remove_user_button.place(x=210, y=200)
+    exit_from_admin_panel_button.place(x=210, y=500)
+
+
+    admin_panel.mainloop()
+
 
 def logout():
     with open("data.json", "w") as f:
@@ -274,11 +371,12 @@ def welcome_screen(user, name):
     welcome_canvas.create_text(290, 40, text=f"Welcome to your account, {name}", font=("Arial", 25, "bold"), fill="white")
     welcome_canvas.create_text(300, 140, text="Actions:", font=("Arial", 15), fill="white")
     welcome_canvas.create_text(300, 490, text="Want to quit? ", font=("Arial", 15,"bold"), fill="white")
+    welcome_canvas.create_text(300, 550, text="To ensure your operations are saved, please click 'Log Out' before exiting.", font=("Arial", 15,"bold"), fill="white")
     deposit_button = ttk.Button(welcome_canvas, width=15, text="Deposit", command=lambda: deposit(user))
     withdraw_button = ttk.Button(welcome_canvas, width=15, text="Withdraw", command=lambda: withdraw(user))
     check_balance_button = ttk.Button(welcome_canvas, width=15, text="Check balance", command=lambda: check_balance(user))
     view_transaction_history_button = ttk.Button(welcome_canvas, width=15, text="View transactions", command=lambda: view_transaction_history(user))
-    exit_from_welcome_button = ttk.Button(welcome_canvas, width=15, text="Exit", command=lambda: logout())
+    exit_from_welcome_button = ttk.Button(welcome_canvas, width=15, text="Log out", command=lambda: logout())
     deposit_button.place(x=210, y=150)
     withdraw_button.place(x=210, y=200)
     check_balance_button.place(x=210, y=250)
@@ -303,7 +401,7 @@ if __name__ == "__main__":
     my_canvas.create_text(300, 490, text="Want to quit? ", font=("Arial", 15,"bold"), fill="white")
     register_button = ttk.Button(my_canvas, width=15, text="Register", command=lambda: register())
     login_button = ttk.Button(my_canvas, width=15, text="Login", command=lambda: login())
-    exit_button = ttk.Button(my_canvas, width=15, text="Exit", command=lambda: logout())
+    exit_button = ttk.Button(my_canvas, width=15, text="Exit", command=lambda: exit())
     register_button.place(x=210, y=200)
     login_button.place(x=210, y=300)
     exit_button.place(x=210, y=500)
