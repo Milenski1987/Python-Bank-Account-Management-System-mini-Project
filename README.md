@@ -39,10 +39,10 @@
 ### 🙍‍♂️ Current user interface
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/7b7bdb46-2fd0-486d-9642-17b762644c42" width="450" />
-  <img src="https://github.com/user-attachments/assets/4096e492-ab65-4450-9212-3b4ac34e3c9b" width="450" /> 
-  <img src="https://github.com/user-attachments/assets/98fbfb58-0d6b-4129-ad00-8ee71d1d02d4" width="450" />
-  <img src="https://github.com/user-attachments/assets/3f3b039a-9f3a-4218-a02a-7cb0eb22a4b1" width="450" /> 
+  <img src="https://github.com/user-attachments/assets/7b7bdb46-2fd0-486d-9642-17b762644c42" width="400" />
+  <img src="https://github.com/user-attachments/assets/4096e492-ab65-4450-9212-3b4ac34e3c9b" width="400" /> 
+  <img src="https://github.com/user-attachments/assets/98fbfb58-0d6b-4129-ad00-8ee71d1d02d4" width="400" />
+  <img src="https://github.com/user-attachments/assets/3f3b039a-9f3a-4218-a02a-7cb0eb22a4b1" width="400" /> 
 </p>
 
 ---
