@@ -1,8 +1,9 @@
 # 🌟 Bank Account Management System 🌟   
 
 
+![image](https://github.com/user-attachments/assets/d379f945-4371-416d-a5d6-17889cd51c61)
 
-![image](https://github.com/user-attachments/assets/ae6e5b05-10b5-419b-9517-1f61c379f1b5)
+
 
 ## 💰 Bank Account Management System built with Python with the following features:
 
