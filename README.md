@@ -33,6 +33,20 @@ A Bank Account Management System is a secure application designed to manage cust
 
 8. 🔐 Security
    - added password encryption
+  
+---
+
+### 📁 Project structure
+
+```
+Python-Bank-Account_Management-System
+├── LICENSE
+├── README.md                             # Project documentation
+├── data.json                             # File to store all information about users
+├── bank_system.py                        # Main logic
+├── ui.py                                 # User interface
+└── .gitignore                            # Exclude unnecessary files from Git tracking
+```
 
 ---
 
