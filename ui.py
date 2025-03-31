@@ -1,4 +1,4 @@
-from bank_system import *
+import bank_system as bs
 import tkinter as tk
 from tkinter import ttk
 
@@ -8,7 +8,7 @@ def deposit_screen(user_id):
     def deposit_money():
         deposit_text.delete("1.0", 'end')
         amount = deposit_entry.get()
-        response = deposit(amount, user_id)
+        response = bs.deposit(amount, user_id)
         deposit_text.insert(tk.END, response)
 
 
@@ -32,7 +32,7 @@ def withdraw_screen(user_id):
     def withdraw_money():
         withdraw_text.delete("1.0", 'end')
         amount = withdraw_entry.get()
-        response = withdraw(amount, user_id)
+        response = bs.withdraw(amount, user_id)
         withdraw_text.insert(tk.END, response)
 
     withdraw_screen = tk.Tk()
@@ -52,7 +52,7 @@ def withdraw_screen(user_id):
 
 
 def check_balance_screen(user_id):
-    response = check_balance(user_id)
+    response = bs.check_balance(user_id)
     balance_screen = tk.Tk()
     balance_screen.geometry(WINDOW_SIZE)
     balance_screen.title("Show balance")
@@ -65,7 +65,7 @@ def check_balance_screen(user_id):
 
 
 def transactions_history(user_id):
-    response = view_transaction_history(user_id)
+    response = bs.view_transaction_history(user_id)
     transactions_screen = tk.Tk()
     transactions_screen.geometry(WINDOW_SIZE)
     transactions_screen.title("Deposit")
@@ -85,7 +85,7 @@ def welcome_screen(user_id):
 
     welcome_canvas = tk.Canvas(welcome, width=600, height=600)
     welcome_canvas.pack(fill="both", expand=True)
-    welcome_canvas.create_text(290, 40, text=f"Welcome to your account, {account_holders[user_id]['name']}", font=("Arial", 25, "bold"),
+    welcome_canvas.create_text(290, 40, text=f"Welcome to your account, {bs.account_holders[user_id]['name']}", font=("Arial", 25, "bold"),
                                fill="white")
     welcome_canvas.create_text(300, 140, text="Actions:", font=("Arial", 15), fill="white")
     welcome_canvas.create_text(300, 490, text="Want to quit? ", font=("Arial", 15, "bold"), fill="white")
@@ -108,7 +108,7 @@ def welcome_screen(user_id):
 
 
 def list_accounts_screen():
-    response = list_accounts()
+    response = bs.list_accounts()
     listing_screen = tk.Tk()
     listing_screen.geometry(WINDOW_SIZE)
     listing_screen.title("Accounts")
@@ -124,7 +124,7 @@ def remove_username_screen():
     def remove_user():
         user_id = remove_entry.get()
         password = password_entry.get()
-        response = remove_username(user_id, password)
+        response = bs.remove_username(user_id, password)
         remove_text.delete("1.0", "end")
         remove_text.insert(tk.END, response)
 
@@ -178,7 +178,7 @@ def register_screen():
         password = password_entry.get()
         first_name = first_name_entry.get()
         last_name = last_name_entry.get()
-        response = user_registration(username, password, first_name, last_name)
+        response = bs.user_registration(username, password, first_name, last_name)
         register_text.insert(tk.END, response)
 
 
@@ -218,7 +218,7 @@ def login_screen():
     def login_username():
         user_id = username_entry.get()
         password = password_entry.get()
-        response = login(user_id, password)
+        response = bs.login(user_id, password)
         login_text.delete("1.0", "end")
         if response == "admin":
             login_screen.destroy()
@@ -250,7 +250,7 @@ def login_screen():
 
 
 def logout():
-    user_logout()
+    bs.user_logout()
     main_screen()
 
 
