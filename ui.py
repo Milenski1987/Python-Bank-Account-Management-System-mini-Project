@@ -1,4 +1,6 @@
 from bank_system import *
+import tkinter as tk
+from tkinter import ttk
 
 WINDOW_SIZE = "600x600+100+500"
 

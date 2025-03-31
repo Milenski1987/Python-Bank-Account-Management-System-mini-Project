@@ -2,8 +2,6 @@ import json
 import os
 import re
 import sys
-import tkinter as tk
-from tkinter import ttk
 import base64
 
 
