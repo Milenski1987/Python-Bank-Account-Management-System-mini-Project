@@ -1,5 +1,6 @@
 from bank_system import *
 
+WINDOW_SIZE = "600x600+100+500"
 
 def deposit_screen(user_id):
     def deposit_money():
@@ -10,7 +11,7 @@ def deposit_screen(user_id):
 
 
     deposit_screen = tk.Tk()
-    deposit_screen.geometry("200x200+100+500")
+    deposit_screen.geometry(WINDOW_SIZE)
     deposit_screen.title("Deposit")
     deposit_label = tk.Label(deposit_screen, text="How much you want to deposit: ")
     deposit_label.pack()
@@ -33,7 +34,7 @@ def withdraw_screen(user_id):
         withdraw_text.insert(tk.END, response)
 
     withdraw_screen = tk.Tk()
-    withdraw_screen.geometry("200x200+100+500")
+    withdraw_screen.geometry(WINDOW_SIZE)
     withdraw_screen.title("Withdraw")
     withdraw_label = tk.Label(withdraw_screen, text="How much you want to withdraw: ")
     withdraw_label.pack()
@@ -51,7 +52,7 @@ def withdraw_screen(user_id):
 def check_balance_screen(user_id):
     response = check_balance(user_id)
     balance_screen = tk.Tk()
-    balance_screen.geometry("200x200+100+500")
+    balance_screen.geometry(WINDOW_SIZE)
     balance_screen.title("Show balance")
     balance_text = tk.Text(balance_screen, width=50, height=2)
     balance_text.pack()
@@ -64,7 +65,7 @@ def check_balance_screen(user_id):
 def transactions_history(user_id):
     response = view_transaction_history(user_id)
     transactions_screen = tk.Tk()
-    transactions_screen.geometry("600x600+100+500")
+    transactions_screen.geometry(WINDOW_SIZE)
     transactions_screen.title("Deposit")
     transactions_text = tk.Text(transactions_screen, width=60, height=15)
     transactions_text.pack()
@@ -76,7 +77,7 @@ def transactions_history(user_id):
 
 def welcome_screen(user_id):
     welcome = tk.Tk()
-    welcome.geometry("600x600+100+500")
+    welcome.geometry(WINDOW_SIZE)
     welcome.title("Welcome")
     welcome.title("Welcome")
 
@@ -107,7 +108,7 @@ def welcome_screen(user_id):
 def list_accounts_screen():
     response = list_accounts()
     listing_screen = tk.Tk()
-    listing_screen.geometry("600x600+100+500")
+    listing_screen.geometry(WINDOW_SIZE)
     listing_screen.title("Accounts")
     listing_text = tk.Text(listing_screen, width=80, height=25)
     listing_text.pack()
@@ -126,7 +127,7 @@ def remove_username_screen():
         remove_text.insert(tk.END, response)
 
     remove_screen = tk.Tk()
-    remove_screen.geometry("200x200+100+500")
+    remove_screen.geometry(WINDOW_SIZE)
     remove_screen.title("Remove user")
     remove_label = tk.Label(remove_screen, text="Enter username you want to be removed:")
     remove_label.pack()
@@ -148,7 +149,7 @@ def remove_username_screen():
 def admin_panel():
     #admin panel
     admin_panel = tk.Tk()
-    admin_panel.geometry("600x600+100+500")
+    admin_panel.geometry(WINDOW_SIZE)
     admin_panel.title("Welcome")
 
     admin_canvas = tk.Canvas(admin_panel, width=600, height=600)
@@ -170,27 +171,17 @@ def admin_panel():
 
 def register_screen():
     def registration():
-        response = ""
-        try:
-            register_text.delete("1.0", 'end')
-            username = username_entry.get()
-            password = password_entry.get()
-            first_name = first_name_entry.get()
-            last_name = last_name_entry.get()
-            if user_registration(username, password, first_name, last_name):
-                response = "User Successfully Registered!"
-        except MissingRequiredInformation:
-            response = "All fields marked with * are required..."
-        except InvalidUsername:
-            response =  "Invalid username or username already taken. Please try again..."
-        except InvalidPassword:
-            response =  "Invalid password! Please try again..."
-        finally:
-            register_text.insert(tk.END, response)
+        register_text.delete("1.0", 'end')
+        username = username_entry.get()
+        password = password_entry.get()
+        first_name = first_name_entry.get()
+        last_name = last_name_entry.get()
+        response = user_registration(username, password, first_name, last_name)
+        register_text.insert(tk.END, response)
 
 
     register_screen = tk.Tk()
-    register_screen.geometry("600x600+100+500")
+    register_screen.geometry(WINDOW_SIZE)
     register_screen.title("Register")
     username_label = tk.Label(register_screen, text="*Enter username (6-20 symbols, only letters and digits: ")
     username_label.pack()
@@ -237,7 +228,7 @@ def login_screen():
             login_text.insert(tk.END, response)
 
     login_screen = tk.Tk()
-    login_screen.geometry("600x600+100+500")
+    login_screen.geometry(WINDOW_SIZE)
     login_screen.title("Login")
     username_label = tk.Label(login_screen, text="Enter your username: ")
     username_label.pack()
@@ -264,7 +255,7 @@ def logout():
 def main_screen():
     root = tk.Tk()
     root.title("Bank Account System")
-    root.geometry("600x600+100+500")
+    root.geometry(WINDOW_SIZE)
     my_canvas = tk.Canvas(root, width=600, height=600)
     my_canvas.pack(fill="both", expand=True)
     my_canvas.create_text(310, 100, text="Welcome to Bank Account System ", font=("Arial", 20, "bold"), fill="white")

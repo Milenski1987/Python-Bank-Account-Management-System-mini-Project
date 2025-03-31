@@ -4,7 +4,7 @@ import re
 import sys
 import tkinter as tk
 from tkinter import ttk
-import numpy as np
+import base64
 
 
 class ChosenNumberOutOfRange(Exception):
@@ -111,15 +111,7 @@ def remove_username(user_id, password):
 
 
 def encrypt_password(password):
-    key = np.array([[4, 2], [1, 9]])
-    process_init_password = [ord(character) for character in password]
-
-    while len(process_init_password) % 2 != 0:
-        process_init_password.append(0)
-    process_init_password = np.array(process_init_password)
-    process_init_password = process_init_password.reshape(len(process_init_password) // 2, 2)
-    encrypted_matrix = np.dot(process_init_password, key)
-    encrypted_password = ''.join([chr(int(character)) for row in encrypted_matrix for character in row])
+    encrypted_password = str(base64.b64encode(password.encode()))
     return encrypted_password
 
 def valid_username(current_username):
@@ -140,29 +132,35 @@ def valid_password(current_password):
 
 
 def user_registration(username, password, first_name, last_name):
-    if valid_username(username) and valid_password(password) and username and password and first_name and last_name:
-        account_holders[username] = {'password': encrypt_password(password),
-                                     'name':f"{first_name} {last_name}",
-                                     'balance': 0,
-                                     'loans': 0,
-                                     'transactions': []}
-        with open("data.json", "w") as f:
-            json.dump(account_holders, f)
-        return True
-    elif not username or not password or not first_name or not last_name:
-        raise MissingRequiredInformation
-    elif not valid_username(username):
-        raise InvalidUsername
-    elif not valid_password(password):
-        raise InvalidPassword
+    try:
+        if valid_username(username) and valid_password(password) and username and password and first_name and last_name:
+            account_holders[username] = {'password': encrypt_password(password),
+                                         'name':f"{first_name} {last_name}",
+                                         'balance': 0,
+                                         'loans': 0,
+                                         'transactions': []}
+            with open("data.json", "w") as f:
+                json.dump(account_holders, f)
+            return "User Successfully Registered!"
+        elif not username or not password or not first_name or not last_name:
+            raise MissingRequiredInformation
+        elif not valid_username(username):
+            raise InvalidUsername
+        elif not valid_password(password):
+            raise InvalidPassword
+    except MissingRequiredInformation:
+        return "All fields marked with * are required..."
+    except InvalidUsername:
+        return "Invalid username or username already taken. Please try again..."
+    except InvalidPassword:
+        return "Invalid password! Please try again..."
 
 
 def login(user_id, password):
-    #login function with login form interface and login form logic
     try:
         if user_id == "administrator" and password == "Admin12345":
             return "admin"
-        elif user_id in account_holders and encrypt_password(password) == account_holders[user_id]['password']:
+        elif user_id in account_holders and str(encrypt_password(password)) == account_holders[user_id]['password']:
             return "regular"
         elif user_id not in account_holders:
             raise InvalidUsername
