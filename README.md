@@ -66,6 +66,7 @@ Python-Bank-Account_Management-System
  - user option to apply for a loan with a fixed interest rate and max loan amount
  - ADMIN option to change interest rate and max loan amount
  - option to change password
+ - add date to user transactions history
  
 ---
 ## ⚙️ Technology stack:
