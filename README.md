@@ -62,8 +62,9 @@ Python-Bank-Account_Management-System
 ---
 
  ### 🎯 The following features will be added in the next version:
- - random-generated IBAN for every registered user
+ - generate IBAN for every registered user
  - option to apply for a loan
+ - option to change password
  
 ---
 ## ⚙️ Technology stack:
