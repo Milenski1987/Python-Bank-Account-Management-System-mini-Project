@@ -2,6 +2,8 @@ import bank_system as bs
 import tkinter as tk
 from tkinter import ttk
 
+
+
 WINDOW_SIZE = "600x600+100+500"
 
 def deposit_screen(user_id):
@@ -258,7 +260,7 @@ def main_screen():
     root = tk.Tk()
     root.title("Bank Account System")
     root.geometry(WINDOW_SIZE)
-    my_canvas = tk.Canvas(root, width=600, height=600)
+    my_canvas = tk.Canvas(root,width=600, height=600)
     my_canvas.pack(fill="both", expand=True)
     my_canvas.create_text(310, 100, text="Welcome to Bank Account System ", font=("Arial", 20, "bold"), fill="white")
     my_canvas.create_text(300, 190, text="Don't have account? ", font=("Arial", 15), fill="white")
@@ -274,7 +276,7 @@ def main_screen():
     exit_button.place(x=210, y=500)
     root.mainloop()
 
-
 if __name__ == '__main__':
     main_screen()
+
 
