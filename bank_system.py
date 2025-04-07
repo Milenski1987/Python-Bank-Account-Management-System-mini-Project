@@ -3,6 +3,7 @@ import os
 import re
 import sys
 import base64
+import datetime
 
 
 class ChosenNumberOutOfRange(Exception):
@@ -49,10 +50,13 @@ def deposit(amount, user_id):
     except NegativeAmount:
         return "Amount must be positive number"
     else:
-        account_holders[user_id]['transactions'].append(f"{money_amount:.2f}")
+        account_holders[user_id]['transactions'].append(f"{get_current_time()}  {money_amount:.2f}")
         account_holders[user_id]['balance'] += float(f"{money_amount:.2f}")
         return "Successful transaction"
 
+def get_current_time():
+    x = datetime.datetime.now()
+    return f"{x.strftime('%x')}  {x.strftime('%X')}"
 
 def withdraw(amount, user_id):
     try:
@@ -68,7 +72,7 @@ def withdraw(amount, user_id):
     except NegativeAmount:
         return "Amount must be positive number"
     else:
-        account_holders[user_id]['transactions'].append(f"-{money_amount:.2f}")
+        account_holders[user_id]['transactions'].append(f"{get_current_time()}  -{money_amount:.2f}")
         account_holders[user_id]['balance'] -= float(f"{money_amount:.2f}")
         return "Successful transaction"
 
@@ -78,13 +82,13 @@ def check_balance(user_id):
 
 
 def view_transaction_history(user_id):
-    return f'Recent transactions: \n{", ".join(list(map(str,account_holders[user_id]['transactions'])))}'
+    return f'Recent transactions: \n{"\n".join(list(map(str,account_holders[user_id]['transactions'])))}'
 
 
 def list_accounts():
     return f"Accounts: \n\n{'\n'.join([f'{username}:\n  '
                                        f'Balance: {account_holders[username]['balance']}\n  '
-                                           f'Transactions: {', '.join(account_holders[username]['transactions'])}\n'
+                                           f'Transactions:\n   {'\n   '.join(account_holders[username]['transactions'])}\n'
                                        for username in account_holders if username != 'administrator'])}"
 
 
@@ -138,7 +142,7 @@ def user_registration(username, password, first_name, last_name):
                                          'loans': 0,
                                          'transactions': []}
             with open("data.json", "w") as f:
-                json.dump(account_holders, f)
+                json.dump(account_holders, f, indent=1)
             return "User Successfully Registered!"
         elif not username or not password or not first_name or not last_name:
             raise MissingRequiredInformation
@@ -174,4 +178,4 @@ def login(user_id, password):
 
 def user_logout():
     with open("data.json", "w") as f:
-        json.dump(account_holders, f)
+        json.dump(account_holders, f, indent=1)
