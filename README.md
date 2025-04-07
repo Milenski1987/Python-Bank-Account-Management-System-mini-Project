@@ -22,7 +22,7 @@ A Bank Account Management System is a secure application designed to manage cust
    - registered users can check the balance of an account
     
 5. 🤑 Transaction History
-   - registered users can get full information about recent transactions
+   - registered users can get full information about recent transactions including date and time of every transaction
 
 6. 👨‍💼 Admin Panel:
    - feature to remove users
@@ -67,7 +67,7 @@ Python-Bank-Account_Management-System
  - user option to chech loan status
  - ADMIN option to change interest rate and max loan amount
  - option to change password
- - add date to user transactions history
+ 
  
 ---
 ## ⚙️ Technology stack:
