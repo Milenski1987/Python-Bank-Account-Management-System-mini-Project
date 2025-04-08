@@ -1,26 +1,6 @@
 {
  "administrator": {
-  "password": "Admin12345"
- },
- "Milenski": {
-  "password": "b'TWlsZW5za2kxOTA4'",
-  "name": "Milen Nikolov",
-  "balance": 0,
-  "loans": 0,
-  "transactions": []
- },
- "Velata": {
-  "password": "b'VmVsYTEyMzQ1'",
-  "name": "Vela Nikolova",
-  "balance": 12.0,
-  "loans": 0,
-  "transactions": [
-   "04/07/25  09:56:43  123.00",
-   "04/07/25  09:56:45  23.00",
-   "04/07/25  09:56:49  -23.00",
-   "04/07/25  09:56:51  -123.00",
-   "04/07/25  09:56:56  23.00",
-   "04/07/25  09:56:59  -11.00"
-  ]
+  "password": "Admin12345",
+  "counter": 1
  }
 }

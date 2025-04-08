@@ -66,6 +66,19 @@ def check_balance_screen(user_id):
     balance_button.pack()
 
 
+def check_iban_screen(user_id):
+    response = bs.check_iban(user_id)
+    balance_screen = tk.Tk()
+    balance_screen.geometry(WINDOW_SIZE)
+    balance_screen.title("IBAN")
+    balance_text = tk.Text(balance_screen, width=50, height=2)
+    balance_text.pack()
+    balance_text.insert(tk.END, response)
+    balance_button = tk.Button(balance_screen, text="Back to Welcome screen",
+                               command=lambda: balance_screen.destroy())
+    balance_button.pack()
+
+
 def transactions_history(user_id):
     response = bs.view_transaction_history(user_id)
     transactions_screen = tk.Tk()
@@ -100,12 +113,14 @@ def welcome_screen(user_id):
                                       command=lambda: check_balance_screen(user_id))
     view_transaction_history_button = ttk.Button(welcome_canvas, width=15, text="View transactions",
                                                  command=lambda: transactions_history(user_id))
+    check_iban_button = ttk.Button(welcome_canvas, width=15, text="Check IBAN", command=lambda: check_iban_screen(user_id))
     exit_from_welcome_button = ttk.Button(welcome_canvas, width=15, text="Log out",
                                           command=lambda: (welcome.destroy(), logout()))
     deposit_button.place(x=210, y=150)
     withdraw_button.place(x=210, y=200)
     check_balance_button.place(x=210, y=250)
     view_transaction_history_button.place(x=210, y=300)
+    check_iban_button.place(x=210, y=350)
     exit_from_welcome_button.place(x=210, y=500)
 
 

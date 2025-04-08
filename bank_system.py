@@ -81,6 +81,10 @@ def check_balance(user_id):
     return f"Current balance: {account_holders[user_id]['balance']:.2f}"
 
 
+def check_iban(user_id):
+    return f"Your IBAN: {account_holders[user_id]['IBAN']}"
+
+
 def view_transaction_history(user_id):
     return f'Recent transactions: \n{"\n".join(list(map(str,account_holders[user_id]['transactions'])))}'
 
@@ -112,9 +116,14 @@ def remove_username(user_id, password):
             return f"{user_id} successfully removed"
 
 
+def generate_iban(counter):
+    return f"BG18MNBB204719{counter:04d}{counter:04d}"
+
+
 def encrypt_password(password):
     encrypted_password = str(base64.b64encode(password.encode()))
     return encrypted_password
+
 
 def valid_username(current_username):
     if (current_username not in account_holders
@@ -136,11 +145,14 @@ def valid_password(current_password):
 def user_registration(username, password, first_name, last_name):
     try:
         if valid_username(username) and valid_password(password) and username and password and first_name and last_name:
-            account_holders[username] = {'password': encrypt_password(password),
+            account_holders[username] = {'user_id': 1,
+                                         'password': encrypt_password(password),
                                          'name':f"{first_name} {last_name}",
+                                         'IBAN': generate_iban(account_holders['administrator']['counter']),
                                          'balance': 0,
                                          'loans': 0,
                                          'transactions': []}
+            account_holders['administrator']['counter'] += 1
             with open("data.json", "w") as f:
                 json.dump(account_holders, f, indent=1)
             return "User Successfully Registered!"
