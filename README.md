@@ -13,7 +13,7 @@ A Bank Account Management System is a secure application designed to manage cust
    - exit application
  
 2. 💵 Deposit Money
-   - registered user can deposit money to their accounts
+   - registered user can deposit money into their accounts
     
 3. 💶 Withdraw Money
    - registered users can withdraw money from their accounts if an amount is available
@@ -22,16 +22,20 @@ A Bank Account Management System is a secure application designed to manage cust
    - registered users can check the balance of an account
     
 5. 🤑 Transaction History
-   - registered users can get full information about recent transactions including date and time of every transaction
+   - registered users can get full information about recent transactions, including date and time of every transaction
 
-6. 👨‍💼 Admin Panel:
+6. IBAN
+   - every registered user gets an automatically generated IBAN
+   - users can check IBAN
+
+7. 👨‍💼 Admin Panel:
    - feature to remove users
    - feature to view all user accounts
 
-7. ℹ️ Information about users is stored in a JSON file
+8. ℹ️ Information about users is stored in a JSON file
    - username, password, full name, account balance, and transaction history are now saved
 
-8. 🔐 Security
+9. 🔐 Security
    - added password encryption
   
 ---
@@ -62,9 +66,8 @@ Python-Bank-Account_Management-System
 ---
 
  ### 🎯 The following features will be added in the next version:
- - generate IBAN for every registered user
  - user option to apply for a loan with a fixed interest rate and max loan amount
- - user option to chech loan status
+ - user option to check loan status
  - ADMIN option to change interest rate and max loan amount
  - option to change password
  
