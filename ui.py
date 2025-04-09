@@ -92,6 +92,46 @@ def transactions_history(user_id):
     transactions_button.pack()
 
 
+def change_password_screen(user_id):
+    def change_password():
+        password_text.delete("1.0", 'end')
+        current_password = current_password_entry.get()
+        new_password = password_entry.get()
+        new_password_2 = new_password_entry_2.get()
+        response = bs.user_change_password(user_id, current_password, new_password, new_password_2)
+        password_text.insert(tk.END, response)
+
+
+    password_screen = tk.Tk()
+    password_screen.geometry(WINDOW_SIZE)
+    password_screen.title("Password Change")
+    current_password_label = tk.Label(password_screen, text="*Enter current password: ")
+    current_password_label.pack()
+    current_password_entry = tk.Entry(password_screen, justify="center", show="*")
+    current_password_entry.pack()
+    new_password_label = tk.Label(password_screen, text="*Enter new password "
+                                                    "(8-20 symbols,first letter must be Capital then only letters and digits: ")
+    new_password_label.pack()
+    password_entry = tk.Entry(password_screen, justify="center", show="*")
+    password_entry.pack()
+    new_password_2_label = tk.Label(password_screen, text="*Re-Enter new password "
+                                                        "(8-20 symbols,first letter must be Capital then only letters and digits: ")
+    new_password_2_label.pack()
+    new_password_entry_2 = tk.Entry(password_screen, justify="center", show="*")
+    new_password_entry_2.pack()
+
+    information = tk.Label(password_screen, text="*Required fields")
+    information.pack()
+    password_text = tk.Text(password_screen, width=70, height=2)
+    password_text.pack()
+
+    change_password_screen_button = tk.Button(password_screen, text="Change Password", command=change_password)
+    change_password_screen_button.pack()
+    change_password_screen_button = tk.Button(password_screen, text="Back to Welcome screen",
+                                       command=lambda: (password_screen.destroy()))
+    change_password_screen_button.pack()
+
+
 def welcome_screen(user_id):
     welcome = tk.Tk()
     welcome.geometry(WINDOW_SIZE)
@@ -114,6 +154,7 @@ def welcome_screen(user_id):
     view_transaction_history_button = ttk.Button(welcome_canvas, width=15, text="View transactions",
                                                  command=lambda: transactions_history(user_id))
     check_iban_button = ttk.Button(welcome_canvas, width=15, text="Check IBAN", command=lambda: check_iban_screen(user_id))
+    change_password_button = ttk.Button(welcome_canvas, width=15, text="Change Password", command=lambda: change_password_screen(user_id))
     exit_from_welcome_button = ttk.Button(welcome_canvas, width=15, text="Log out",
                                           command=lambda: (welcome.destroy(), logout()))
     deposit_button.place(x=210, y=150)
@@ -121,6 +162,7 @@ def welcome_screen(user_id):
     check_balance_button.place(x=210, y=250)
     view_transaction_history_button.place(x=210, y=300)
     check_iban_button.place(x=210, y=350)
+    change_password_button.place(x=210, y=450)
     exit_from_welcome_button.place(x=210, y=500)
 
 

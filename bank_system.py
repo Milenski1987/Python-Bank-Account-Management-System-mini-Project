@@ -15,6 +15,9 @@ class InvalidUsername(Exception):
 class InvalidPassword(Exception):
     pass
 
+class InvalidNewPassword(Exception):
+    pass
+
 class MissingRequiredInformation(Exception):
     pass
 
@@ -25,6 +28,9 @@ class InsufficientFunds(Exception):
     pass
 
 class Forbidden(Exception):
+    pass
+
+class PasswordNotMatch(Exception):
     pass
 
 
@@ -89,6 +95,37 @@ def view_transaction_history(user_id):
     return f'Recent transactions: \n{"\n".join(list(map(str,account_holders[user_id]['transactions'])))}'
 
 
+def user_change_password(user_id, current_password, new_password, new_password_again):
+    try:
+        if ((encrypt_password(current_password) == account_holders[user_id]['password']
+                and valid_password(new_password)
+                and new_password == new_password_again)
+                and current_password != new_password):
+            account_holders[user_id]['password'] = encrypt_password(new_password)
+            user_logout()
+            return "Password changed successfully"
+        elif not current_password or not new_password or not new_password_again:
+            raise MissingRequiredInformation
+        elif encrypt_password(current_password) != account_holders[user_id]['password']:
+            raise InvalidPassword
+        elif new_password != new_password_again:
+            raise PasswordNotMatch
+        elif not valid_password(new_password):
+            raise InvalidNewPassword
+        elif account_holders[user_id]['password'] == encrypt_password(new_password):
+            raise Forbidden
+    except MissingRequiredInformation:
+        return "All fields are required..."
+    except InvalidPassword:
+        return "Wrong current password, try again.."
+    except InvalidNewPassword:
+        return "Invalid new password! Please try again..."
+    except PasswordNotMatch:
+        return "New password entered in both fields is different"
+    except Forbidden:
+        return "New password can't be same as current password"
+
+
 def list_accounts():
     return f"Accounts: \n\n{'\n'.join([f'{username}:\n  '
                                        f'Balance: {account_holders[username]['balance']}\n  '
@@ -97,7 +134,6 @@ def list_accounts():
 
 
 def remove_username(user_id, password):
-        response = ""
         try:
             if user_id == 'administrator':
                 raise Forbidden
@@ -153,8 +189,7 @@ def user_registration(username, password, first_name, last_name):
                                          'loans': 0,
                                          'transactions': []}
             account_holders['administrator']['counter'] += 1
-            with open("data.json", "w") as f:
-                json.dump(account_holders, f, indent=1)
+            user_logout()
             return "User Successfully Registered!"
         elif not username or not password or not first_name or not last_name:
             raise MissingRequiredInformation
@@ -174,7 +209,7 @@ def login(user_id, password):
     try:
         if user_id == "administrator" and password == "Admin12345":
             return "admin"
-        elif user_id in account_holders and str(encrypt_password(password)) == account_holders[user_id]['password']:
+        elif user_id in account_holders and encrypt_password(password) == account_holders[user_id]['password']:
             return "regular"
         elif user_id not in account_holders:
             raise InvalidUsername
