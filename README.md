@@ -69,7 +69,7 @@ Python-Bank-Account_Management-System
  - user option to apply for a loan with a fixed interest rate and max loan amount
  - user option to check loan status
  - ADMIN option to change interest rate and max loan amount
- - option to change password
+
  
  
 ---
