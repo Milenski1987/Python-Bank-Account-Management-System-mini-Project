@@ -108,6 +108,8 @@ def loan_screen(user_id):
     loan_apply_screen_label = tk.Label(loan_apply_screen_screen,
                                        text=f"Minimal term in months: {bs.MIN_LOAN_TERM}, Maximal term in months: {bs.MAX_LOAN_TERM}")
     loan_apply_screen_label.pack()
+    loan_apply_screen_label = tk.Label(loan_apply_screen_screen, text=f"Current annual interest rate: {bs.INTEREST_RATE}%")
+    loan_apply_screen_label.pack()
     loan_apply_screen_label = tk.Label(loan_apply_screen_screen, text="Enter desired amount: ")
     loan_apply_screen_label.pack()
     loan_apply_screen_entry_amount = tk.Entry(loan_apply_screen_screen, justify="center")
@@ -176,7 +178,7 @@ def welcome_screen(user_id):
     welcome_canvas.pack(fill="both", expand=True)
     welcome_canvas.create_text(290, 40, text=f"Welcome to your account, {bs.account_holders[user_id]['name']}", font=("Arial", 25, "bold"),
                                fill="white")
-    welcome_canvas.create_text(300, 140, text="Actions:", font=("Arial", 15), fill="white")
+    welcome_canvas.create_text(300, 160, text="Actions:", font=("Arial", 15), fill="white")
     welcome_canvas.create_text(300, 490, text="Want to quit? ", font=("Arial", 15, "bold"), fill="white")
     welcome_canvas.create_text(300, 550,
                                text="To ensure your operations are saved, please click 'Log Out' before exiting.",
@@ -192,9 +194,10 @@ def welcome_screen(user_id):
     }
     available_actions = ["Deposit", "Withdraw", "Check Balance", "View Recent Transactions", "Check IBAN", "Apply for Loan", "Change Password"]
     chosen_action = tk.StringVar(welcome_canvas)
+    chosen_action.set(" ")
     choose_action = tk.OptionMenu(welcome_canvas, chosen_action, *available_actions)
-    choose_action.config(width=20)
-    choose_action.place(x=200, y=180)
+    choose_action.config(width=15)
+    choose_action.place(x=210, y=180)
     action_button = ttk.Button(welcome_canvas, width=15, text="Go", command=lambda: actions[chosen_action.get()](user_id))
     action_button.place(x = 210, y=210)
     exit_from_welcome_button = ttk.Button(welcome_canvas, width=15, text="Log out",command=lambda: (welcome.destroy(), logout()))
