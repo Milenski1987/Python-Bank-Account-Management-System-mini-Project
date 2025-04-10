@@ -61,8 +61,8 @@ Python-Bank-Account_Management-System
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/7b7bdb46-2fd0-486d-9642-17b762644c42" width="400" />
-  <img src="https://github.com/user-attachments/assets/4096e492-ab65-4450-9212-3b4ac34e3c9b" width="400" /> 
-  <img src="https://github.com/user-attachments/assets/98fbfb58-0d6b-4129-ad00-8ee71d1d02d4" width="400" />
+  <img src="https://github.com/user-attachments/assets/b28e2cdc-88b6-4177-9c8b-b9bb8b5e2046" width="400" /> 
+  <img src="https://github.com/user-attachments/assets/50a5a318-6785-4f9b-a5f5-78a87b73a93e" width="400" />
   <img src="https://github.com/user-attachments/assets/3f3b039a-9f3a-4218-a02a-7cb0eb22a4b1" width="400" /> 
 </p>
 
@@ -73,8 +73,7 @@ Python-Bank-Account_Management-System
  - user option to check loan status
  - ADMIN option to change interest rate and max loan amount
 
- 
- 
+
 ---
 ## ⚙️ Technology stack:
 <p align="left">
