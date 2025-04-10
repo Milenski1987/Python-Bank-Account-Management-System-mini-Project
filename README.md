@@ -69,7 +69,6 @@ Python-Bank-Account_Management-System
 ---
 
  ### 🎯 The following features will be added in the next version:
- - updated user panel
  - user option to check loan status
  - ADMIN option to change interest rate and max loan amount
 
