@@ -181,25 +181,24 @@ def welcome_screen(user_id):
     welcome_canvas.create_text(300, 550,
                                text="To ensure your operations are saved, please click 'Log Out' before exiting.",
                                font=("Arial", 15, "bold"), fill="white")
-    deposit_button = ttk.Button(welcome_canvas, width=15, text="Deposit", command=lambda: deposit_screen(user_id))
-    withdraw_button = ttk.Button(welcome_canvas, width=15, text="Withdraw", command=lambda: withdraw_screen(user_id))
-    check_balance_button = ttk.Button(welcome_canvas, width=15, text="Check balance",
-                                      command=lambda: check_balance_screen(user_id))
-    view_transaction_history_button = ttk.Button(welcome_canvas, width=15, text="View transactions",
-                                                 command=lambda: transactions_history(user_id))
-    check_iban_button = ttk.Button(welcome_canvas, width=15, text="Check IBAN", command=lambda: check_iban_screen(user_id))
-    loan_apply_button = ttk.Button(welcome_canvas, width=15, text="Apply for Loan", command=lambda: loan_screen(user_id))
-    change_password_button = ttk.Button(welcome_canvas, width=15, text="Change Password", command=lambda: change_password_screen(user_id))
-    exit_from_welcome_button = ttk.Button(welcome_canvas, width=15, text="Log out",
-                                          command=lambda: (welcome.destroy(), logout()))
-    deposit_button.place(x=210, y=150)
-    withdraw_button.place(x=210, y=200)
-    check_balance_button.place(x=210, y=250)
-    view_transaction_history_button.place(x=210, y=300)
-    check_iban_button.place(x=210, y=350)
-    loan_apply_button.place(x= 210, y=400)
-    change_password_button.place(x=210, y=450)
-    exit_from_welcome_button.place(x=210, y=500)
+    actions = {
+        "Deposit": deposit_screen,
+        "Withdraw": withdraw_screen,
+        "Check Balance": check_balance_screen,
+        "View Recent Transactions": transactions_history,
+        "Check IBAN": check_iban_screen,
+        "Apply for Loan": loan_screen,
+        "Change Password": change_password_screen,
+    }
+    available_actions = ["Deposit", "Withdraw", "Check Balance", "View Recent Transactions", "Check IBAN", "Apply for Loan", "Change Password"]
+    chosen_action = tk.StringVar(welcome_canvas)
+    choose_action = tk.OptionMenu(welcome_canvas, chosen_action, *available_actions)
+    choose_action.config(width=20)
+    choose_action.place(x=200, y=180)
+    action_button = ttk.Button(welcome_canvas, width=15, text="Go", command=lambda: actions[chosen_action.get()](user_id))
+    action_button.place(x = 210, y=210)
+    exit_from_welcome_button = ttk.Button(welcome_canvas, width=15, text="Log out",command=lambda: (welcome.destroy(), logout()))
+    exit_from_welcome_button.place(x= 210, y=500)
 
 
 def list_accounts_screen():
