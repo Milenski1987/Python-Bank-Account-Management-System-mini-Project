@@ -28,14 +28,17 @@ A Bank Account Management System is a secure application designed to manage cust
    - every registered user gets an automatically generated IBAN
    - users can check IBAN
 
-7. 👨‍💼 Admin Panel:
+7. Loans
+   - regitered users without loans can apply for loan
+     
+8. 👨‍💼 Admin Panel:
    - feature to remove users
    - feature to view all user accounts
 
-8. ℹ️ Information about users is stored in a JSON file
+9. ℹ️ Information about users is stored in a JSON file
    - username, password, full name, account balance, and transaction history are now saved
 
-9. 🔐 Security
+10. 🔐 Security
    - added password encryption
   
 ---
@@ -66,7 +69,7 @@ Python-Bank-Account_Management-System
 ---
 
  ### 🎯 The following features will be added in the next version:
- - user option to apply for a loan with a fixed interest rate and max loan amount
+ - updated user panel
  - user option to check loan status
  - ADMIN option to change interest rate and max loan amount
 
