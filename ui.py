@@ -83,7 +83,7 @@ def transactions_history(user_id):
     response = bs.view_transaction_history(user_id)
     transactions_screen = tk.Tk()
     transactions_screen.geometry(WINDOW_SIZE)
-    transactions_screen.title("Deposit")
+    transactions_screen.title("Transactions History")
     transactions_text = tk.Text(transactions_screen, width=60, height=15)
     transactions_text.pack()
     transactions_text.insert(tk.END, response)
