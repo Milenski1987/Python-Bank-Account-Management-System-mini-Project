@@ -34,6 +34,13 @@ class PasswordNotMatch(Exception):
     pass
 
 
+INTEREST_RATE = 4
+MAX_LOAN_AMOUNT = 10000
+MIN_LOAN_AMOUNT = 1000
+MIN_LOAN_TERM = 6
+MAX_LOAN_TERM = 96
+
+
 def resource_path(relative_path):
     if getattr(sys, 'frozen', False):
         base_path = sys._MEIPASS
@@ -58,6 +65,7 @@ def deposit(amount, user_id):
     else:
         account_holders[user_id]['transactions'].append(f"{get_current_time()}  {money_amount:.2f}")
         account_holders[user_id]['balance'] += float(f"{money_amount:.2f}")
+        file_save()
         return "Successful transaction"
 
 def get_current_time():
@@ -80,6 +88,7 @@ def withdraw(amount, user_id):
     else:
         account_holders[user_id]['transactions'].append(f"{get_current_time()}  -{money_amount:.2f}")
         account_holders[user_id]['balance'] -= float(f"{money_amount:.2f}")
+        file_save()
         return "Successful transaction"
 
 
@@ -102,7 +111,7 @@ def user_change_password(user_id, current_password, new_password, new_password_a
                 and new_password == new_password_again)
                 and current_password != new_password):
             account_holders[user_id]['password'] = encrypt_password(new_password)
-            user_logout()
+            file_save()
             return "Password changed successfully"
         elif not current_password or not new_password or not new_password_again:
             raise MissingRequiredInformation
@@ -149,7 +158,48 @@ def remove_username(user_id, password):
             return "Wrong ADMIN password. Please try again.."
         else:
             del account_holders[user_id]
+            file_save()
             return f"{user_id} successfully removed"
+
+
+def loan_monthly_payment(amount, term):
+    interest_rate_per_month = (INTEREST_RATE / 12) / 100
+    monthly_payment = (amount * interest_rate_per_month * (1 + interest_rate_per_month)**term)/((1 + interest_rate_per_month)**term - 1)
+    return float(f"{monthly_payment:.2f}")
+
+
+def apply_for_loan(user_id, amount, term):
+    try:
+        if not amount or not term:
+            raise MissingRequiredInformation
+        elif float(account_holders[user_id]['loan']) > 0:
+            raise Forbidden
+        elif int(amount) not in range(MIN_LOAN_AMOUNT, MAX_LOAN_AMOUNT + 1):
+            raise ChosenNumberOutOfRange
+        elif int(term) not in range(MIN_LOAN_TERM, MAX_LOAN_TERM + 1):
+            raise ChosenNumberOutOfRange
+    except Forbidden:
+        return f"Denied! You already have loan!"
+    except MissingRequiredInformation:
+        return "Amount field and Term field are required!"
+    except ChosenNumberOutOfRange:
+        return (f"Please enter valid numbers in range:\n"
+                f" {MIN_LOAN_AMOUNT} - {MAX_LOAN_AMOUNT} for amount\n "
+                f"{MIN_LOAN_TERM} - {MAX_LOAN_TERM} for term")
+    except ValueError:
+        return "Please enter valid number"
+    else:
+        amount = float(amount)
+        term = int(term)
+
+        account_holders[user_id]['loan'] = float(f"{amount:.2f}")
+        monthly_payment = loan_monthly_payment(amount, term)
+        account_holders[user_id]['monthly_payment'] = monthly_payment
+        account_holders[user_id]['balance'] += float(f"{amount:.2f}")
+        account_holders[user_id]['transactions'].append(f"{get_current_time()}  {amount:.2f}")
+        file_save()
+        return (f"Your loan is approved and will be in your account in short time!"
+                f"\nYour monthly payment will be {monthly_payment}")
 
 
 def generate_iban(counter):
@@ -186,10 +236,10 @@ def user_registration(username, password, first_name, last_name):
                                          'name':f"{first_name} {last_name}",
                                          'IBAN': generate_iban(account_holders['administrator']['counter']),
                                          'balance': 0,
-                                         'loans': 0,
+                                         'loan': 0,
                                          'transactions': []}
             account_holders['administrator']['counter'] += 1
-            user_logout()
+            file_save()
             return "User Successfully Registered!"
         elif not username or not password or not first_name or not last_name:
             raise MissingRequiredInformation
@@ -223,6 +273,6 @@ def login(user_id, password):
 
 
 
-def user_logout():
+def file_save():
     with open("data.json", "w") as f:
         json.dump(account_holders, f, indent=1)

@@ -1,6 +1,15 @@
 {
  "administrator": {
   "password": "Admin12345",
-  "counter": 3
+  "counter": 5
+ },
+ "Milenski": {
+  "user_id": 1,
+  "password": "b'TWlsZW4xMjM0NQ=='",
+  "name": "Milen Nikolov",
+  "IBAN": "BG18MNBB20471900040004",
+  "balance": 0,
+  "loan": 0,
+  "transactions": []
  }
 }

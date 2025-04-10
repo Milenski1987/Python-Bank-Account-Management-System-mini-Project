@@ -3,8 +3,8 @@ import tkinter as tk
 from tkinter import ttk
 
 
-
 WINDOW_SIZE = "600x600+100+500"
+
 
 def deposit_screen(user_id):
     def deposit_money():
@@ -25,7 +25,7 @@ def deposit_screen(user_id):
     deposit_text.pack()
     deposit_button = tk.Button(deposit_screen, text="Deposit", command=deposit_money)
     deposit_button.pack()
-    deposit_button = tk.Button(deposit_screen, text="Back to Welcome screen",
+    deposit_button = tk.Button(deposit_screen, text="Back to User Panel",
                                command=lambda: deposit_screen.destroy())
     deposit_button.pack()
 
@@ -48,7 +48,7 @@ def withdraw_screen(user_id):
     withdraw_text.pack()
     withdraw_button = tk.Button(withdraw_screen, text="Withdraw", command=withdraw_money)
     withdraw_button.pack()
-    withdraw_button = tk.Button(withdraw_screen, text="Back to Welcome screen",
+    withdraw_button = tk.Button(withdraw_screen, text="Back to User Panel",
                                 command=lambda: withdraw_screen.destroy())
     withdraw_button.pack()
 
@@ -61,7 +61,7 @@ def check_balance_screen(user_id):
     balance_text = tk.Text(balance_screen, width=50, height=2)
     balance_text.pack()
     balance_text.insert(tk.END, response)
-    balance_button = tk.Button(balance_screen, text="Back to Welcome screen",
+    balance_button = tk.Button(balance_screen, text="Back to User Panel",
                                command=lambda: balance_screen.destroy())
     balance_button.pack()
 
@@ -74,7 +74,7 @@ def check_iban_screen(user_id):
     balance_text = tk.Text(balance_screen, width=50, height=2)
     balance_text.pack()
     balance_text.insert(tk.END, response)
-    balance_button = tk.Button(balance_screen, text="Back to Welcome screen",
+    balance_button = tk.Button(balance_screen, text="Back to User Panel",
                                command=lambda: balance_screen.destroy())
     balance_button.pack()
 
@@ -87,9 +87,43 @@ def transactions_history(user_id):
     transactions_text = tk.Text(transactions_screen, width=60, height=15)
     transactions_text.pack()
     transactions_text.insert(tk.END, response)
-    transactions_button = tk.Button(transactions_screen, text="Back to Welcome screen",
+    transactions_button = tk.Button(transactions_screen, text="Back to User Panel",
                                     command=lambda: transactions_screen.destroy())
     transactions_button.pack()
+
+
+def loan_screen(user_id):
+    def loan():
+        loan_apply_screen_text.delete("1.0", 'end')
+        amount = loan_apply_screen_entry_amount.get()
+        term = loan_apply_screen_entry_term.get()
+        response = bs.apply_for_loan(user_id, amount, term)
+        loan_apply_screen_text.insert(tk.END, response)
+
+    loan_apply_screen_screen = tk.Tk()
+    loan_apply_screen_screen.geometry(WINDOW_SIZE)
+    loan_apply_screen_screen.title("Apply for Loan")
+    loan_apply_screen_label = tk.Label(loan_apply_screen_screen, text=f"Minimal amount: {bs.MIN_LOAN_AMOUNT}, Maximal amount: {bs.MAX_LOAN_AMOUNT}")
+    loan_apply_screen_label.pack()
+    loan_apply_screen_label = tk.Label(loan_apply_screen_screen,
+                                       text=f"Minimal term in months: {bs.MIN_LOAN_TERM}, Maximal term in months: {bs.MAX_LOAN_TERM}")
+    loan_apply_screen_label.pack()
+    loan_apply_screen_label = tk.Label(loan_apply_screen_screen, text="Enter desired amount: ")
+    loan_apply_screen_label.pack()
+    loan_apply_screen_entry_amount = tk.Entry(loan_apply_screen_screen, justify="center")
+    loan_apply_screen_entry_amount.pack()
+    loan_apply_screen_label = tk.Label(loan_apply_screen_screen, text="Enter Desired  term: ")
+    loan_apply_screen_label.pack()
+    loan_apply_screen_entry_term = tk.Entry(loan_apply_screen_screen, justify="center")
+    loan_apply_screen_entry_term.pack()
+    loan_apply_screen_text = tk.Text(loan_apply_screen_screen, width=50, height=5)
+    loan_apply_screen_text.pack()
+    loan_apply_screen_button = tk.Button(loan_apply_screen_screen, text="Apply", command=loan)
+    loan_apply_screen_button.pack()
+    loan_apply_screen_button = tk.Button(loan_apply_screen_screen, text="Back to User Panel",
+                                command=lambda: loan_apply_screen_screen.destroy())
+    loan_apply_screen_button.pack()
+
 
 
 def change_password_screen(user_id):
@@ -127,7 +161,7 @@ def change_password_screen(user_id):
 
     change_password_screen_button = tk.Button(password_screen, text="Change Password", command=change_password)
     change_password_screen_button.pack()
-    change_password_screen_button = tk.Button(password_screen, text="Back to Welcome screen",
+    change_password_screen_button = tk.Button(password_screen, text="Back to User Panel",
                                        command=lambda: (password_screen.destroy()))
     change_password_screen_button.pack()
 
@@ -154,6 +188,7 @@ def welcome_screen(user_id):
     view_transaction_history_button = ttk.Button(welcome_canvas, width=15, text="View transactions",
                                                  command=lambda: transactions_history(user_id))
     check_iban_button = ttk.Button(welcome_canvas, width=15, text="Check IBAN", command=lambda: check_iban_screen(user_id))
+    loan_apply_button = ttk.Button(welcome_canvas, width=15, text="Apply for Loan", command=lambda: loan_screen(user_id))
     change_password_button = ttk.Button(welcome_canvas, width=15, text="Change Password", command=lambda: change_password_screen(user_id))
     exit_from_welcome_button = ttk.Button(welcome_canvas, width=15, text="Log out",
                                           command=lambda: (welcome.destroy(), logout()))
@@ -162,6 +197,7 @@ def welcome_screen(user_id):
     check_balance_button.place(x=210, y=250)
     view_transaction_history_button.place(x=210, y=300)
     check_iban_button.place(x=210, y=350)
+    loan_apply_button.place(x= 210, y=400)
     change_password_button.place(x=210, y=450)
     exit_from_welcome_button.place(x=210, y=500)
 
@@ -309,7 +345,7 @@ def login_screen():
 
 
 def logout():
-    bs.user_logout()
+    bs.file_save()
     main_screen()
 
 
