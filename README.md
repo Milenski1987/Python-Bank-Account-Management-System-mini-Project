@@ -6,41 +6,29 @@ A Bank Account Management System is a secure application designed to manage cust
 
 
 ## 💰 Bank Account Management System built with Python overview:
-
 1. 🏦 Welcome screen with three options:
-   - register a new user
-   - login registered user
+   - register a new user - every user gets an automatically generated "user ID" and IBAN
+   - login registered user - login with username and password
    - exit application
  
-2. 💵 Deposit Money
-   - registered user can deposit money into their accounts
-    
-3. 💶 Withdraw Money
-   - registered users can withdraw money from their accounts if an amount is available
-    
-4. ⚖️ Check Balance
-   - registered users can check the balance of an account
-    
-5. 🤑 Transaction History
-   - registered users can get full information about recent transactions, including date and time of every transaction
-
-6. IBAN
-   - every registered user gets an automatically generated IBAN
-   - users can check IBAN
-
-7. Loans
-   - regitered users without loans can apply for loan
+2. User Panel with the following features:
+   - 💵 Deposit - users can deposit money into their accounts
+   - 💶 Withdraw - users can withdraw money from their accounts if an amount is available
+   - ⚖️ Check Balance - users can check the balance of an account
+   - 🤑 View Recent Transactions - users can get complete information about recent transactions, including date and time of every transaction
+   - 💳 Check IBAN - users can view their IBAN
+   - 💱 Apply for a Loan - users without loans can apply for a loan
+   - 🔑 Change Password - users can change their current password
      
-8. 👨‍💼 Admin Panel:
-   - feature to remove users
-   - feature to view all user accounts
+3. 👨‍💼 Admin Panel with the following features:
+   - remove username - remove user from data file
+   - show accounts - view all user accounts with information about balance and transactions
 
-9. ℹ️ Information about users is stored in a JSON file
-   - username, password, full name, account balance, and transaction history are now saved
+* ℹ️ Information about users is stored in a JSON file
+* 🔐 Security - added password encryption
 
-10. 🔐 Security
-   - added password encryption
-  
+
+##### Application works smooth on macOS
 ---
 
 ### 📁 Project structure
