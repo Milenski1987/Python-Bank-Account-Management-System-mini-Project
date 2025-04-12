@@ -53,7 +53,7 @@ with open(resource_path("data.json")) as file:
     account_holders = json.load(file)
 
 
-def deposit(amount, user_id):
+def deposit(amount: str, user_id: str) -> str:
     try:
         money_amount = float(amount)
         if money_amount <= 0:
@@ -68,11 +68,11 @@ def deposit(amount, user_id):
         file_save()
         return "Successful transaction"
 
-def get_current_time():
+def get_current_time() -> str:
     x = datetime.datetime.now()
     return f"{x.strftime('%x')}  {x.strftime('%X')}"
 
-def withdraw(amount, user_id):
+def withdraw(amount: str, user_id: str) -> str:
     try:
         money_amount = float(amount)
         if account_holders[user_id]['balance'] <= 0 or account_holders[user_id]['balance'] < money_amount:
@@ -92,19 +92,19 @@ def withdraw(amount, user_id):
         return "Successful transaction"
 
 
-def check_balance(user_id):
+def check_balance(user_id: str) -> str:
     return f"Current balance: {account_holders[user_id]['balance']:.2f}"
 
 
-def check_iban(user_id):
+def check_iban(user_id: str) -> str:
     return f"Your IBAN: {account_holders[user_id]['IBAN']}"
 
 
-def view_transaction_history(user_id):
+def view_transaction_history(user_id: str) -> str:
     return f'Recent transactions: \n{"\n".join(list(map(str,account_holders[user_id]['transactions'])))}'
 
 
-def user_change_password(user_id, current_password, new_password, new_password_again):
+def user_change_password(user_id: str, current_password: str, new_password: str, new_password_again: str) -> str:
     try:
         if ((encrypt_password(current_password) == account_holders[user_id]['password']
                 and valid_password(new_password)
@@ -135,14 +135,14 @@ def user_change_password(user_id, current_password, new_password, new_password_a
         return "New password can't be same as current password"
 
 
-def list_accounts():
+def list_accounts() -> str:
     return f"Accounts: \n\n{'\n'.join([f'{username}:\n  '
                                        f'Balance: {account_holders[username]['balance']}\n  '
                                            f'Transactions:\n   {'\n   '.join(account_holders[username]['transactions'])}\n'
                                        for username in account_holders if username != 'administrator'])}"
 
 
-def remove_username(user_id, password):
+def remove_username(user_id: str, password: str) -> str:
         try:
             if user_id == 'administrator':
                 raise Forbidden
@@ -162,13 +162,13 @@ def remove_username(user_id, password):
             return f"{user_id} successfully removed"
 
 
-def loan_monthly_payment(amount, term):
+def loan_monthly_payment(amount: float, term: int) -> float:
     interest_rate_per_month = (INTEREST_RATE / 12) / 100
     monthly_payment = (amount * interest_rate_per_month * (1 + interest_rate_per_month)**term)/((1 + interest_rate_per_month)**term - 1)
     return float(f"{monthly_payment:.2f}")
 
 
-def apply_for_loan(user_id, amount, term):
+def apply_for_loan(user_id: str, amount: str, term: str) -> str:
     try:
         if not amount or not term:
             raise MissingRequiredInformation
@@ -202,16 +202,16 @@ def apply_for_loan(user_id, amount, term):
                 f"\nYour monthly payment will be {monthly_payment}")
 
 
-def generate_iban(counter):
+def generate_iban(counter: int) -> str:
     return f"BG18MNBB204719{counter:04d}{counter:04d}"
 
 
-def encrypt_password(password):
+def encrypt_password(password: str) -> str:
     encrypted_password = str(base64.b64encode(password.encode()))
     return encrypted_password
 
 
-def valid_username(current_username):
+def valid_username(current_username:str) -> bool:
     if (current_username not in account_holders
             and current_username.lower() != "admin"
             and len(current_username) in range(6,21)
@@ -220,7 +220,7 @@ def valid_username(current_username):
     return False
 
 
-def valid_password(current_password):
+def valid_password(current_password: str) -> bool:
     password_pattern = r"[A-Z][a-z0-9]{7,19}"
     result = re.search(password_pattern, current_password)
     if result:
@@ -228,7 +228,7 @@ def valid_password(current_password):
     return False
 
 
-def user_registration(username, password, first_name, last_name):
+def user_registration(username: str, password: str, first_name: str, last_name: str) -> str:
     try:
         if valid_username(username) and valid_password(password) and username and password and first_name and last_name:
             account_holders[username] = {'user_id': 1,
@@ -255,7 +255,7 @@ def user_registration(username, password, first_name, last_name):
         return "Invalid password! Please try again..."
 
 
-def login(user_id, password):
+def login(user_id: str, password: str) -> str:
     try:
         if user_id == "administrator" and password == "Admin12345":
             return "admin"
@@ -273,6 +273,6 @@ def login(user_id, password):
 
 
 
-def file_save():
+def file_save() -> None:
     with open("data.json", "w") as f:
         json.dump(account_holders, f, indent=1)
