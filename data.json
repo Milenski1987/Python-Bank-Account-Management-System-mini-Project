@@ -1,7 +1,12 @@
 {
  "administrator": {
   "password": "Admin12345",
-  "counter": 7
+  "counter": 7,
+  "INTEREST_RATE": 4,
+  "MAX_LOAN_AMOUNT": 10000,
+  "MIN_LOAN_AMOUNT": 1000,
+  "MIN_LOAN_TERM": 6,
+  "MAX_LOAN_TERM": 96
  },
  "Milenski": {
   "user_id": 1,

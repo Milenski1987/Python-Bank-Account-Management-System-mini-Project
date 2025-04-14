@@ -34,11 +34,11 @@ class PasswordNotMatch(Exception):
     pass
 
 
-INTEREST_RATE = 4
-MAX_LOAN_AMOUNT = 10000
-MIN_LOAN_AMOUNT = 1000
-MIN_LOAN_TERM = 6
-MAX_LOAN_TERM = 96
+# INTEREST_RATE = 4
+# MAX_LOAN_AMOUNT = 10000
+# MIN_LOAN_AMOUNT = 1000
+# MIN_LOAN_TERM = 6
+# MAX_LOAN_TERM = 96
 
 
 def resource_path(relative_path):
@@ -142,6 +142,42 @@ def list_accounts() -> str:
                                        for username in account_holders if username != 'administrator'])}"
 
 
+def change_rate(amount: str, password: str) -> str:
+    try:
+        if int(amount) <= 0:
+            raise NegativeAmount
+        if password != account_holders['administrator']['password']:
+            raise InvalidPassword
+    except NegativeAmount:
+        return "New interest rate must be positive integer number"
+    except InvalidPassword:
+        return "Wrong ADMIN password. Please try again.."
+    except ValueError:
+        return "Please enter valid number"
+    else:
+        account_holders['administrator']['INTEREST_RATE'] = int(amount)
+        file_save()
+        return "Interest rate successfully changed"
+
+
+def change_amount(amount: str, password: str) -> str:
+    try:
+        if float(amount) <= account_holders['administrator']['MIN_LOAN_AMOUNT']:
+            raise Forbidden
+        if password != account_holders['administrator']['password']:
+            raise InvalidPassword
+    except Forbidden:
+        return f"New max amount must be number bigger than min loan amount ({account_holders['administrator']['MIN_LOAN_AMOUNT']})."
+    except InvalidPassword:
+        return "Wrong ADMIN password. Please try again.."
+    except ValueError:
+        return "Please enter valid number"
+    else:
+        account_holders['administrator']['MAX_LOAN_AMOUNT'] = float(amount)
+        file_save()
+        return "Max loan amount successfully changed"
+
+
 def remove_username(user_id: str, password: str) -> str:
         try:
             if user_id == 'administrator':
@@ -163,7 +199,7 @@ def remove_username(user_id: str, password: str) -> str:
 
 
 def loan_monthly_payment(amount: float, term: int) -> float:
-    interest_rate_per_month = (INTEREST_RATE / 12) / 100
+    interest_rate_per_month = (account_holders['administrator']['INTEREST RATE'] / 12) / 100
     monthly_payment = (amount * interest_rate_per_month * (1 + interest_rate_per_month)**term)/((1 + interest_rate_per_month)**term - 1)
     return float(f"{monthly_payment:.2f}")
 
@@ -174,9 +210,9 @@ def apply_for_loan(user_id: str, amount: str, term: str) -> str:
             raise MissingRequiredInformation
         elif float(account_holders[user_id]['loan']) > 0:
             raise Forbidden
-        elif int(amount) not in range(MIN_LOAN_AMOUNT, MAX_LOAN_AMOUNT + 1):
+        elif int(amount) not in range(account_holders['administrator']['MIN_LOAN_AMOUNT'], account_holders['administrator']['MAX_LOAN_AMOUNT'] + 1):
             raise ChosenNumberOutOfRange
-        elif int(term) not in range(MIN_LOAN_TERM, MAX_LOAN_TERM + 1):
+        elif int(term) not in range(account_holders['administrator']['MIN_LOAN_TERM'], account_holders['administrator']['MAX_LOAN_TERM'] + 1):
             raise ChosenNumberOutOfRange
     except Forbidden:
         return f"Denied! You already have loan!"
@@ -184,8 +220,8 @@ def apply_for_loan(user_id: str, amount: str, term: str) -> str:
         return "Amount field and Term field are required!"
     except ChosenNumberOutOfRange:
         return (f"Please enter valid numbers in range:\n"
-                f" {MIN_LOAN_AMOUNT} - {MAX_LOAN_AMOUNT} for amount\n "
-                f"{MIN_LOAN_TERM} - {MAX_LOAN_TERM} for term")
+                f" {account_holders['administrator']['MIN_LOAN_AMOUNT']} - {account_holders['administrator']['MAX_LOAN_AMOUNT']} for amount\n "
+                f"{account_holders['administrator']['MIN_LOAN_TERM']} - {account_holders['administrator']['MAX_LOAN_TERM']} for term")
     except ValueError:
         return "Please enter valid number"
     else:

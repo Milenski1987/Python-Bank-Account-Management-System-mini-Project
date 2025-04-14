@@ -245,6 +245,34 @@ def remove_username_screen():
     remove_button.pack()
 
 
+def change_loan_screen(command):
+    def change_loan():
+        new_value = change_entry.get()
+        password = password_entry.get()
+        response = bs.change_rate(new_value, password) if command == "Interest Rate" else bs.change_amount(new_value, password)
+        remove_text.delete("1.0", "end")
+        remove_text.insert(tk.END, response)
+
+    change_screen = tk.Tk()
+    change_screen.geometry(WINDOW_SIZE)
+    change_screen.title("Change Loan")
+    change_label = tk.Label(change_screen, text="Enter new interest rate (integer number): " if command == "Interest Rate" else "Enter new max loan amount:")
+    change_label.pack()
+    change_entry = tk.Entry(change_screen, justify="center")
+    change_entry.pack()
+    password_label = tk.Label(change_screen, text="Enter ADMIN password: ")
+    password_label.pack()
+    password_entry = tk.Entry(change_screen, justify="center", show="*")
+    password_entry.pack()
+    remove_text = tk.Text(change_screen, width=40, height=2)
+    remove_text.pack()
+    remove_button = tk.Button(change_screen, text="Change", command=change_loan)
+    remove_button.pack()
+    remove_button = tk.Button(change_screen, text="Back to ADMIN panel",
+                              command=lambda: change_screen.destroy())
+    remove_button.pack()
+
+
 def admin_panel():
     #admin panel
     admin_panel = tk.Tk()
@@ -261,10 +289,14 @@ def admin_panel():
     admin_canvas.create_text(300, 490, text="Want to quit? ", font=("Arial", 15, "bold"), fill="white")
     list_account_button = ttk.Button(admin_canvas, width=15, text="Show accounts", command=lambda: list_accounts_screen())
     remove_user_button = ttk.Button(admin_canvas, width=15, text="Remove username", command=lambda: remove_username_screen())
+    change_interest_rate_button = ttk.Button(admin_canvas, width=15, text="Change Loan Rate", command=lambda: change_loan_screen("Interest Rate"))
+    change_max_amount_button = ttk.Button(admin_canvas, width=15, text="Change Loan Max Amount", command=lambda: change_loan_screen("Max Amount"))
 
     exit_from_admin_panel_button = ttk.Button(admin_canvas, width=15, text="Log out", command=lambda: (admin_panel.destroy(), logout()))
     list_account_button.place(x=210, y=150)
     remove_user_button.place(x=210, y=200)
+    change_interest_rate_button.place(x=210, y=250)
+    change_max_amount_button.place(x=210, y=300)
     exit_from_admin_panel_button.place(x=210, y=500)
 
 
