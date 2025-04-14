@@ -23,12 +23,14 @@ A Bank Account Management System is a secure application designed to manage cust
 3. 👨‍💼 Admin Panel with the following features:
    - remove username - remove user from data file
    - show accounts - view all user accounts with information about balance and transactions
+   - change interest rate - ADMIN can change the annual interest rate
+   - change max loan amount - ADMIN can change the maximum loan amount
 
 * ℹ️ Information about users is stored in a JSON file
 * 🔐 Security - added password encryption
 
 
-##### Application works smooth on macOS
+##### Application works smoothly on macOS
 ---
 
 ### 📁 Project structure
@@ -58,7 +60,6 @@ Python-Bank-Account_Management-System
 
  ### 🎯 The following features will be added in the next version:
  - user option to check loan status
- - ADMIN option to change interest rate and max loan amount
 
 
 ---
