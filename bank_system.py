@@ -137,7 +137,7 @@ def user_change_password(user_id: str, current_password: str, new_password: str,
 
 def list_accounts() -> str:
     return f"Accounts: \n\n{'\n'.join([f'{username}:\n  '
-                                       f'Balance: {account_holders[username]['balance']}\n  '
+                                       f'Balance: {account_holders[username]['balance']}\n  Loan: {account_holders[username]['loan']}\n  '
                                            f'Transactions:\n   {'\n   '.join(account_holders[username]['transactions'])}\n'
                                        for username in account_holders if username != 'administrator'])}"
 
