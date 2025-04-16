@@ -22,7 +22,7 @@ A Bank Account Management System is a secure application designed to manage cust
      
 3. 👨‍💼 Admin Panel with the following features:
    - remove username - remove user from data file
-   - show accounts - view all user accounts with information about balance and transactions
+   - show accounts - view all user accounts with information about balance, loans and transactions
    - change interest rate - ADMIN can change the annual interest rate
    - change max loan amount - ADMIN can change the maximum loan amount
 
