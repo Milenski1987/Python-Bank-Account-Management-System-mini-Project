@@ -68,15 +68,15 @@ def check_balance_screen(user_id):
 
 def check_iban_screen(user_id):
     response = bs.check_iban(user_id)
-    balance_screen = tk.Tk()
-    balance_screen.geometry(WINDOW_SIZE)
-    balance_screen.title("IBAN")
-    balance_text = tk.Text(balance_screen, width=50, height=2)
-    balance_text.pack()
-    balance_text.insert(tk.END, response)
-    balance_button = tk.Button(balance_screen, text="Back to User Panel",
-                               command=lambda: balance_screen.destroy())
-    balance_button.pack()
+    iban_screen = tk.Tk()
+    iban_screen.geometry(WINDOW_SIZE)
+    iban_screen.title("IBAN")
+    iban_text = tk.Text(iban_screen, width=50, height=2)
+    iban_text.pack()
+    iban_text.insert(tk.END, response)
+    iban_button = tk.Button(iban_screen, text="Back to User Panel",
+                               command=lambda: iban_screen.destroy())
+    iban_button.pack()
 
 
 def transactions_history(user_id):
@@ -126,6 +126,18 @@ def loan_screen(user_id):
                                 command=lambda: loan_apply_screen_screen.destroy())
     loan_apply_screen_button.pack()
 
+
+def check_loan_screen(user_id):
+    response = bs.check_loan(user_id)
+    checking_loan_screen = tk.Tk()
+    checking_loan_screen.geometry(WINDOW_SIZE)
+    checking_loan_screen.title("IBAN")
+    checking_loan_text = tk.Text(checking_loan_screen, width=50, height=2)
+    checking_loan_text.pack()
+    checking_loan_text.insert(tk.END, response)
+    checking_loan_button = tk.Button(checking_loan_screen, text="Back to User Panel",
+                               command=lambda: checking_loan_screen.destroy())
+    checking_loan_button.pack()
 
 
 def change_password_screen(user_id):
@@ -190,6 +202,7 @@ def welcome_screen(user_id):
         "View Recent Transactions": transactions_history,
         "Check IBAN": check_iban_screen,
         "Apply for Loan": loan_screen,
+        "Check loan status": check_loan_screen,
         "Change Password": change_password_screen,
     }
     available_actions = ["Deposit", "Withdraw", "Check Balance", "View Recent Transactions", "Check IBAN", "Apply for Loan", "Change Password"]

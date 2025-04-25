@@ -104,6 +104,10 @@ def view_transaction_history(user_id: str) -> str:
     return f'Recent transactions: \n{"\n".join(list(map(str,account_holders[user_id]['transactions'])))}'
 
 
+def check_loan(user_id: str) -> str:
+    return f"As of {get_current_time()}, you owe {account_holders[user_id]['loan']}"
+
+
 def user_change_password(user_id: str, current_password: str, new_password: str, new_password_again: str) -> str:
     try:
         if ((encrypt_password(current_password) == account_holders[user_id]['password']
