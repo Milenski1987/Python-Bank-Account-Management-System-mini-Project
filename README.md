@@ -60,7 +60,7 @@ Python-Bank-Account_Management-System
 ---
 
  ### 🎯 The following features will be added in the next version:
- - user option to check loan status
+
 
 
 ---
