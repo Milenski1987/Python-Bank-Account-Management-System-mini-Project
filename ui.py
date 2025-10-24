@@ -13,7 +13,7 @@ def deposit_screen(user_id):
         response = bs.deposit(amount, user_id)
         deposit_text.insert(tk.END, response)
 
-
+sa
     deposit_screen = tk.Tk()
     deposit_screen.geometry(WINDOW_SIZE)
     deposit_screen.title("Deposit")
